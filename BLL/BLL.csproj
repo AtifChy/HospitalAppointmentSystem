@@ -7,16 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="DTOs\" />
-      <Folder Include="Services\" />
+        <Folder Include="DTOs\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DAL\DAL.csproj" />
+        <ProjectReference Include="..\DAL\DAL.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="16.1.1" />
+        <PackageReference Include="AutoMapper" Version="16.1.1"/>
     </ItemGroup>
 
 </Project>
