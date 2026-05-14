@@ -18,46 +18,46 @@ public class DoctorService : GenericService<Doctor>
         _mapper = MapperConfig.GetMapper();
     }
 
-    public async Task<IEnumerable<DoctorDto>> GetAllDoctorsAsync()
+    public IEnumerable<DoctorDto> GetAllDoctors()
     {
-        var doctors = await _doctorRepository.GetAllAsync();
+        var doctors = _doctorRepository.GetAll();
         return _mapper.Map<IEnumerable<DoctorDto>>(doctors);
     }
 
-    public async Task<DoctorDto?> GetDoctorByIdAsync(int id)
+    public DoctorDto? GetDoctorById(int id)
     {
-        var doctor = await _doctorRepository.GetByIdAsync(id);
+        var doctor = _doctorRepository.GetById(id);
         if (doctor == null) return null;
         return _mapper.Map<DoctorDto>(doctor);
     }
 
-    public async Task<IEnumerable<DoctorDto>> GetDoctorsByDepartmentAsync(int departmentId)
+    public IEnumerable<DoctorDto> GetDoctorsByDepartment(int departmentId)
     {
-        var doctors = await _doctorRepository.GetDoctorsByDepartmentAsync(departmentId);
+        var doctors = _doctorRepository.GetDoctorsByDepartment(departmentId);
         return _mapper.Map<IEnumerable<DoctorDto>>(doctors);
     }
 
-    public async Task<bool> AddDoctorAsync(DoctorDto dto)
+    public bool AddDoctor(DoctorDto dto)
     {
-        var existing = await _userRepository.GetByEmailAsync(dto.Email);
+        var existing = _userRepository.GetByEmail(dto.Email);
         if (existing == null) return false;
 
         var user = _mapper.Map<User>(dto);
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
         user.RoleId = 2;
-        await _userRepository.AddAsync(user);
+        _userRepository.Add(user);
 
         var doctor = _mapper.Map<Doctor>(dto);
         doctor.UserId = user.Id;
         doctor.IsAvailable = true;
-        await _doctorRepository.AddAsync(doctor);
+        _doctorRepository.Add(doctor);
 
         return true;
     }
 
-    public async Task<bool> UpdateDoctorAsync(DoctorDto dto)
+    public bool UpdateDoctor(DoctorDto dto)
     {
-        var doctor = await _doctorRepository.GetDoctorWithUserAsync(dto.Id);
+        var doctor = _doctorRepository.GetDoctorWithUser(dto.Id);
         if (doctor == null) return false;
 
         doctor.User.Name = dto.Name;
@@ -65,25 +65,25 @@ public class DoctorService : GenericService<Doctor>
         doctor.User.PhoneNumber = dto.PhoneNumber;
         doctor.User.Address = dto.PhoneNumber;
         doctor.User.DateOfBirth = dto.DateOfBirth;
-        await _userRepository.UpdateAsync(doctor.User);
+        _userRepository.Update(doctor.User);
 
         doctor.Specialty = dto.Specity;
         doctor.LicenseNumber = dto.LicenseNumber;
         doctor.Fee = dto.Fee;
         doctor.DepartmentId = dto.DepartmentId;
         doctor.IsAvailable = dto.IsAvailable;
-        await _doctorRepository.UpdateAsync(doctor);
+        _doctorRepository.Update(doctor);
 
         return true;
     }
 
-    public async Task<bool> DeactivateDoctorAsync(int id)
+    public bool DeactivateDoctor(int id)
     {
-        var doctor = await _doctorRepository.GetDoctorWithUserAsync(id);
+        var doctor = _doctorRepository.GetDoctorWithUser(id);
         if (doctor == null) return false;
 
         doctor.User.IsActive = false;
-        await _userRepository.UpdateAsync(doctor.User);
+        _userRepository.Update(doctor.User);
 
         return true;
     }

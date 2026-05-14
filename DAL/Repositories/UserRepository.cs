@@ -10,17 +10,17 @@ public class UserRepository : GenericRepository<User>
     {
     }
 
-    public async Task<User?> GetByEmailAsync(string email)
+    public User? GetByEmail(string email)
     {
-        return await _context.Users
+        return _context.Users
             .Include(u => u.Role)
-            .FirstOrDefaultAsync(u => u.Email == email);
+            .FirstOrDefault(u => u.Email == email);
     }
 
-    public async Task<User?> GetWithRoleAsync(int id)
+    public User? GetWithRoleAsync(int id)
     {
-        return await _context.Users
+        return _context.Users
             .Include(u => u.Role)
-            .FirstOrDefaultAsync(u => u.Id == id);
+            .FirstOrDefault(u => u.Id == id);
     }
 }

@@ -10,19 +10,19 @@ public class DoctorRepository : GenericRepository<Doctor>
     {
     }
 
-    public async Task<IEnumerable<Doctor>> GetDoctorsByDepartmentAsync(int departmentId)
+    public IEnumerable<Doctor> GetDoctorsByDepartment(int departmentId)
     {
-        return await _context.Doctors
+        return _context.Doctors
             .Include(d => d.User)
             .Include(d => d.Department)
             .Where(d => d.DepartmentId == departmentId)
-            .ToListAsync();
+            .ToList();
     }
 
-    public async Task<Doctor?> GetDoctorWithUserAsync(int id)
+    public Doctor? GetDoctorWithUser(int id)
     {
-        return await _context.Doctors
+        return _context.Doctors
             .Include(d => d.User)
-            .FirstOrDefaultAsync(d => d.Id == id);
+            .FirstOrDefault(d => d.Id == id);
     }
 }

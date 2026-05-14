@@ -18,38 +18,38 @@ public class AuthService
         _mapper = MapperConfig.GetMapper();
     }
 
-    public async Task<UserDto?> LoginAsync(LoginDto dto)
+    public UserDto? Login(LoginDto dto)
     {
-        var user = await _userRepository.GetByEmailAsync(dto.Email);
+        var user = _userRepository.GetByEmail(dto.Email);
         if (user == null) return null;
         if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash)) return null;
         return _mapper.Map<UserDto>(user);
     }
 
-    public async Task<bool> RegisterAsync(RegisterDto dto)
+    public bool Register(RegisterDto dto)
     {
-        var existing = await _userRepository.GetByEmailAsync(dto.Email);
+        var existing = _userRepository.GetByEmail(dto.Email);
         if (existing != null) return false;
 
         var user = _mapper.Map<User>(dto);
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
         user.RoleId = 3;
-        await _userRepository.AddAsync(user);
+        _userRepository.Add(user);
 
         var patient = _mapper.Map<Patient>(dto);
-        await _patientRepository.AddAsync(patient);
+        _patientRepository.Add(patient);
 
         return true;
     }
 
-    public async Task<bool> ChangePassword(int userId, string oldPassword, string newPassword)
+    public bool ChangePassword(int userId, string oldPassword, string newPassword)
     {
-        var user = await _userRepository.GetByIdAsync(userId);
+        var user = _userRepository.GetById(userId);
         if (user == null) return false;
         if (!BCrypt.Net.BCrypt.Verify(oldPassword, user.PasswordHash)) return false;
 
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
-        await _userRepository.UpdateAsync(user);
+        _userRepository.Update(user);
 
         return true;
     }

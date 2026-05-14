@@ -20,7 +20,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task LoginAsync_ValidCredentials_ReturnsUserDto()
+    public void Login_ValidCredentials_ReturnsUserDto()
     {
         // Arrange
         var context = GetDatabaseContext();
@@ -36,13 +36,13 @@ public class AuthServiceTests
             Name = "Test User",
             RoleId = 3
         };
-        await context.Users.AddAsync(user);
-        await context.SaveChangesAsync();
+        context.Users.Add(user);
+        context.SaveChanges();
 
         var loginDto = new LoginDto { Email = "test@example.com", Password = password };
 
         // Act
-        var result = await authService.LoginAsync(loginDto);
+        var result = authService.Login(loginDto);
 
         // Assert
         Assert.NotNull(result);
@@ -50,7 +50,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task LoginAsync_InvalidEmail_ReturnsNull()
+    public void Login_InvalidEmail_ReturnsNull()
     {
         // Arrange
         var context = GetDatabaseContext();
@@ -61,14 +61,14 @@ public class AuthServiceTests
         var loginDto = new LoginDto { Email = "nonexistent@example.com", Password = "password123" };
 
         // Act
-        var result = await authService.LoginAsync(loginDto);
+        var result = authService.Login(loginDto);
 
         // Assert
         Assert.Null(result);
     }
 
     [Fact]
-    public async Task LoginAsync_InvalidPassword_ReturnsNull()
+    public void Login_InvalidPassword_ReturnsNull()
     {
         // Arrange
         var context = GetDatabaseContext();
@@ -83,20 +83,20 @@ public class AuthServiceTests
             Name = "Test User",
             RoleId = 3
         };
-        await context.Users.AddAsync(user);
-        await context.SaveChangesAsync();
+        context.Users.Add(user);
+        context.SaveChanges();
 
         var loginDto = new LoginDto { Email = "test@example.com", Password = "wrongpassword" };
 
         // Act
-        var result = await authService.LoginAsync(loginDto);
+        var result = authService.Login(loginDto);
 
         // Assert
         Assert.Null(result);
     }
 
     [Fact]
-    public async Task RegisterAsync_ValidDto_ReturnsTrueAndCreatesUserAndPatient()
+    public void Register_ValidDto_ReturnsTrueAndCreatesUserAndPatient()
     {
         // Arrange
         var context = GetDatabaseContext();
@@ -116,21 +116,21 @@ public class AuthServiceTests
         };
 
         // Act
-        var result = await authService.RegisterAsync(registerDto);
+        var result = authService.Register(registerDto);
 
         // Assert
         Assert.True(result);
-        var user = await context.Users.FirstOrDefaultAsync(u => u.Email == registerDto.Email);
+        var user = context.Users.FirstOrDefault(u => u.Email == registerDto.Email);
         Assert.NotNull(user);
         Assert.Equal(3, user.RoleId);
 
-        var patient = await context.Patients.FirstOrDefaultAsync(p => p.UserId == user.Id);
+        var patient = context.Patients.FirstOrDefault(p => p.UserId == user.Id);
         Assert.NotNull(patient);
         Assert.Equal("A+", patient.BloodGroup);
     }
 
     [Fact]
-    public async Task RegisterAsync_ExistingEmail_ReturnsFalse()
+    public void Register_ExistingEmail_ReturnsFalse()
     {
         // Arrange
         var context = GetDatabaseContext();
@@ -145,8 +145,8 @@ public class AuthServiceTests
             Name = "Existing User",
             RoleId = 3
         };
-        await context.Users.AddAsync(existingUser);
-        await context.SaveChangesAsync();
+        context.Users.Add(existingUser);
+        context.SaveChanges();
 
         var registerDto = new RegisterDto
         {
@@ -157,14 +157,14 @@ public class AuthServiceTests
         };
 
         // Act
-        var result = await authService.RegisterAsync(registerDto);
+        var result = authService.Register(registerDto);
 
         // Assert
         Assert.False(result);
     }
 
     [Fact]
-    public async Task ChangePassword_ValidCredentials_ReturnsTrueAndUpdatesPassword()
+    public void ChangePassword_ValidCredentials_ReturnsTrueAndUpdatesPassword()
     {
         // Arrange
         var context = GetDatabaseContext();
@@ -181,20 +181,20 @@ public class AuthServiceTests
             Name = "Test User",
             RoleId = 3
         };
-        await context.Users.AddAsync(user);
-        await context.SaveChangesAsync();
+        context.Users.Add(user);
+        context.SaveChanges();
 
         // Act
-        var result = await authService.ChangePassword(user.Id, oldPassword, newPassword);
+        var result = authService.ChangePassword(user.Id, oldPassword, newPassword);
 
         // Assert
         Assert.True(result);
-        var updatedUser = await context.Users.FindAsync(user.Id);
+        var updatedUser = context.Users.Find(user.Id);
         Assert.True(BCrypt.Net.BCrypt.Verify(newPassword, updatedUser.PasswordHash));
     }
 
     [Fact]
-    public async Task ChangePassword_InvalidOldPassword_ReturnsFalse()
+    public void ChangePassword_InvalidOldPassword_ReturnsFalse()
     {
         // Arrange
         var context = GetDatabaseContext();
@@ -209,18 +209,18 @@ public class AuthServiceTests
             Name = "Test User",
             RoleId = 3
         };
-        await context.Users.AddAsync(user);
-        await context.SaveChangesAsync();
+        context.Users.Add(user);
+        context.SaveChanges();
 
         // Act
-        var result = await authService.ChangePassword(user.Id, "wrongoldpassword", "newpassword");
+        var result = authService.ChangePassword(user.Id, "wrongoldpassword", "newpassword");
 
         // Assert
         Assert.False(result);
     }
 
     [Fact]
-    public async Task ChangePassword_UserNotFound_ReturnsFalse()
+    public void ChangePassword_UserNotFound_ReturnsFalse()
     {
         // Arrange
         var context = GetDatabaseContext();
@@ -229,7 +229,7 @@ public class AuthServiceTests
         var authService = new AuthService(patientRepository, userRepository);
 
         // Act
-        var result = await authService.ChangePassword(999, "oldpassword", "newpassword");
+        var result = authService.ChangePassword(999, "oldpassword", "newpassword");
 
         // Assert
         Assert.False(result);

@@ -11,28 +11,28 @@ public class GenericService<T> where T : class
         _repository = repository;
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public IEnumerable<T> GetAll()
     {
-        return await _repository.GetAllAsync();
+        return _repository.GetAll();
     }
 
-    public async Task<T?> GetByIdAsync(int id)
+    public T? GetById(int id)
     {
-        return await _repository.GetByIdAsync(id);
+        return _repository.GetById(id);
     }
 
-    public async Task AddAsync(T entity)
+    public void Add(T entity)
     {
-        await _repository.AddAsync(entity);
+        _repository.Add(entity);
     }
 
-    public async Task UpdateAsync(T entity)
+    public void Update(T entity)
     {
-        await _repository.UpdateAsync(entity);
+        _repository.Update(entity);
     }
 
-    public async Task DeleteAsync(int id)
+    public void Delete(int id)
     {
-        await _repository.DeleteAsync(id);
+        _repository.Delete(id);
     }
 }
