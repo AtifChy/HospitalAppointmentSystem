@@ -1,11 +1,13 @@
-﻿using DAL.Models;
-using DAL.Repositories;
+﻿using DAL.Repositories;
 
 namespace BLL.Services;
 
-public class PrescriptionService : GenericService<Prescription>
+public class PrescriptionService
 {
-    public PrescriptionService(PrescriptionRepository repository) : base(repository)
+    private readonly PrescriptionRepository _prescriptionRepository;
+
+    public PrescriptionService(PrescriptionRepository prescriptionRepository)
     {
+        _prescriptionRepository = prescriptionRepository;
     }
 }

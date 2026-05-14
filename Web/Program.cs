@@ -20,9 +20,11 @@ builder.Services.AddScoped<DoctorRepository>();
 builder.Services.AddScoped<PatientRepository>();
 builder.Services.AddScoped<AppointmentRepository>();
 builder.Services.AddScoped<DepartmentRepository>();
+builder.Services.AddScoped<PrescriptionRepository>();
 
 // BLL
 builder.Services.AddScoped(typeof(GenericService<>));
+builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<DoctorService>();
 builder.Services.AddScoped<PatientService>();

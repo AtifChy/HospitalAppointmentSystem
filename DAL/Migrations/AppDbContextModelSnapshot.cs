@@ -245,10 +245,13 @@ namespace DAL.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -266,6 +269,9 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
@@ -274,11 +280,12 @@ namespace DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 5, 9, 18, 41, 32, 28, DateTimeKind.Local).AddTicks(3103),
+                            CreatedAt = new DateTime(2026, 5, 10, 1, 16, 44, 17, DateTimeKind.Local).AddTicks(9580),
                             DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@hospital.com",
+                            IsActive = true,
                             Name = "SuperUser",
-                            PasswordHash = "$2a$11$w/2j6eoupmhl/zVKSSfZKenEoKeK9ZTsAy3X5Y5O0/JrDWqo4TVLS",
+                            PasswordHash = "$2a$11$eXu..zMX6rh//9yvnDzGveN/80NNZ/Cl2FvTpfK/ryBvg19lC1BtC",
                             RoleId = 1
                         });
                 });

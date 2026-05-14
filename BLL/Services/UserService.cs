@@ -1,11 +1,13 @@
-﻿using DAL.Models;
-using DAL.Repositories;
+﻿using DAL.Repositories;
 
 namespace BLL.Services;
 
-public class UserService : GenericService<User>
+public class UserService
 {
-    public UserService(UserRepository repository) : base(repository)
+    private readonly UserRepository _userRepository;
+
+    public UserService(UserRepository userRepository)
     {
+        _userRepository = userRepository;
     }
 }

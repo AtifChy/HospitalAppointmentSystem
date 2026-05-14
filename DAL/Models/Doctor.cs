@@ -8,7 +8,8 @@ public class Doctor
     public string Specialty { get; set; }
     public string LicenseNumber { get; set; }
 
-    [Precision(10, 2)] public decimal Fee { get; set; }
+    [Precision(10, 2)] 
+    public decimal Fee { get; set; }
 
     public bool IsAvailable { get; set; } = true;
 

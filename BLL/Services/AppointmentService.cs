@@ -1,11 +1,13 @@
-﻿using DAL.Models;
-using DAL.Repositories;
+﻿using DAL.Repositories;
 
 namespace BLL.Services;
 
-public class AppointmentService : GenericService<Appointment>
+public class AppointmentService
 {
-    public AppointmentService(AppointmentRepository repository) : base(repository)
+    private readonly AppointmentRepository _appointmentRepository;
+
+    public AppointmentService(AppointmentRepository appointmentRepository)
     {
+        _appointmentRepository = appointmentRepository;
     }
 }

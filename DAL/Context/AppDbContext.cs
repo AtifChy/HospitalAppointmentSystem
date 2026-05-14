@@ -26,6 +26,10 @@ public class AppDbContext : DbContext
             new Role { Id = 3, Name = "Patient" }
         );
 
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
         modelBuilder.Entity<User>().HasData(
             new User
             {

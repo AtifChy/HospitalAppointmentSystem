@@ -1,11 +1,13 @@
-﻿using DAL.Models;
-using DAL.Repositories;
+﻿using DAL.Repositories;
 
 namespace BLL.Services;
 
-public class DepartmentService : GenericService<Department>
+public class DepartmentService
 {
-    public DepartmentService(DepartmentRepository repository) : base(repository)
+    private readonly DepartmentRepository _departmentRepository;
+
+    public DepartmentService(DepartmentRepository departmentRepository)
     {
+        _departmentRepository = departmentRepository;
     }
 }
