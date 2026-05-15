@@ -68,7 +68,7 @@ public class AuthController : Controller
     [HttpGet]
     public IActionResult ChangePassword()
     {
-        if (SessionHelper.IsLoggedIn(HttpContext.Session))
+        if (!SessionHelper.IsLoggedIn(HttpContext.Session))
             return RedirectToAction("Login");
 
         return View();
