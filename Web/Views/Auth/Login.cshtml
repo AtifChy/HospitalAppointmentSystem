@@ -1,0 +1,40 @@
+﻿@model BLL.DTOs.LoginDto
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_AuthLayout";
+}
+
+<div class="card shadow mt-5">
+    <div class="card-header bg-primary text-white py-3 text-center">
+        <h3>Hospital Appointment System</h3>
+        <h5>Login</h5>
+    </div>
+
+    <div class="card-body">
+        <form asp-action="Login" method="post">
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="Enter you email" value="@Model.Email"/>
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" placeholder="Enter your password"/>
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-footer text-center py-3">
+        <small>
+            Don't have an account?
+            <a asp-action="Register">Register here</a>
+        </small>
+    </div>
+</div>
