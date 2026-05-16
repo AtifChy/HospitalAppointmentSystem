@@ -118,4 +118,19 @@ public class DoctorController : Controller
         TempData["SuccessMessage"] = "Doctor deleted successfully";
         return RedirectToAction("Index");
     }
+
+    [HttpPost]
+    public IActionResult MarkForPasswordChange(int id)
+    {
+        var adminOnly = AdminOnly();
+        if (adminOnly != null) return adminOnly;
+
+        var success = _doctorService.MarkForPasswordChange(id);
+        if (success)
+            TempData["SuccessMessage"] = "Doctor requested for password change";
+        else
+            TempData["ErrorMessage"] = "Failed to mark doctor for password change";
+
+        return RedirectToAction("Index");
+    }
 }

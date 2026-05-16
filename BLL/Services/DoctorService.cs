@@ -82,4 +82,15 @@ public class DoctorService : GenericService<Doctor>
 
         return true;
     }
+
+    public bool MarkForPasswordChange(int id)
+    {
+        var doctor = _doctorRepository.GetDoctorById(id);
+        if (doctor == null) return false;
+
+        doctor.User.MustChangePassword = true;
+        _userRepository.Update(doctor.User);
+
+        return true;
+    }
 }
