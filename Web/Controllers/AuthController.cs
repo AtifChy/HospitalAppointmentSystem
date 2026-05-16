@@ -38,6 +38,8 @@ public class AuthController : Controller
 
         SessionHelper.SetUserSession(HttpContext.Session, user);
 
+        if (user.MustChangePassword) return RedirectToAction("ChangePassword");
+
         return RedirectToAction("Index", "Home");
     }
 
@@ -88,6 +90,8 @@ public class AuthController : Controller
             ModelState.AddModelError("", "Old Password is incorrect");
             return View(dto);
         }
+
+        SessionHelper.SetMustChangePassword(HttpContext.Session, false);
 
         return RedirectToAction("Index", "Home");
     }

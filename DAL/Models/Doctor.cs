@@ -5,10 +5,9 @@ namespace DAL.Models;
 public class Doctor
 {
     public int Id { get; set; }
-    public string Specialty { get; set; }
     public string LicenseNumber { get; set; }
 
-    [Precision(10, 2)] 
+    [Precision(10, 2)]
     public decimal Fee { get; set; }
 
     public bool IsAvailable { get; set; } = true;

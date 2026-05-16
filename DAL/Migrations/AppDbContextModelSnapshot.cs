@@ -69,7 +69,6 @@ namespace DAL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -81,7 +80,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Department");
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("DAL.Models.Doctor", b =>
@@ -103,10 +102,6 @@ namespace DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LicenseNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Specialty")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -253,6 +248,9 @@ namespace DAL.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("MustChangePassword")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -280,12 +278,13 @@ namespace DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 5, 10, 1, 16, 44, 17, DateTimeKind.Local).AddTicks(9580),
+                            CreatedAt = new DateTime(2026, 5, 16, 0, 46, 8, 792, DateTimeKind.Local).AddTicks(9982),
                             DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@hospital.com",
                             IsActive = true,
+                            MustChangePassword = false,
                             Name = "SuperUser",
-                            PasswordHash = "$2a$11$eXu..zMX6rh//9yvnDzGveN/80NNZ/Cl2FvTpfK/ryBvg19lC1BtC",
+                            PasswordHash = "$2a$11$HvPwGi6zyd2zYQUY2ukLRuVuFhlfZF76Qw7pqXxETBlTgygNp48Bm",
                             RoleId = 1
                         });
                 });

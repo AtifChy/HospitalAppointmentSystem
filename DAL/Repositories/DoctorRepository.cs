@@ -10,7 +10,7 @@ public class DoctorRepository : GenericRepository<Doctor>
     {
     }
 
-    public IEnumerable<Doctor> GetDoctorsByDepartment(int departmentId)
+    public List<Doctor> GetDoctorsByDepartment(int departmentId)
     {
         return _context.Doctors
             .Include(d => d.User)
@@ -19,10 +19,19 @@ public class DoctorRepository : GenericRepository<Doctor>
             .ToList();
     }
 
-    public Doctor? GetDoctorWithUser(int id)
+    public List<Doctor> GetDoctorsAll()
     {
         return _context.Doctors
             .Include(d => d.User)
+            .Include(d => d.Department)
+            .ToList();
+    }
+
+    public Doctor? GetDoctorById(int id)
+    {
+        return _context.Doctors
+            .Include(d => d.User)
+            .Include(d => d.Department)
             .FirstOrDefault(d => d.Id == id);
     }
 }

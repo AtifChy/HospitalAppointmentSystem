@@ -18,33 +18,34 @@ public class DoctorService : GenericService<Doctor>
         _mapper = MapperConfig.GetMapper();
     }
 
-    public IEnumerable<DoctorDto> GetAllDoctors()
+    public List<DoctorDto> GetAllDoctors()
     {
-        var doctors = _doctorRepository.GetAll();
-        return _mapper.Map<IEnumerable<DoctorDto>>(doctors);
+        var doctors = _doctorRepository.GetDoctorsAll();
+        return _mapper.Map<List<DoctorDto>>(doctors);
     }
 
     public DoctorDto? GetDoctorById(int id)
     {
-        var doctor = _doctorRepository.GetById(id);
+        var doctor = _doctorRepository.GetDoctorById(id);
         if (doctor == null) return null;
         return _mapper.Map<DoctorDto>(doctor);
     }
 
-    public IEnumerable<DoctorDto> GetDoctorsByDepartment(int departmentId)
+    public List<DoctorDto> GetDoctorsByDepartment(int departmentId)
     {
         var doctors = _doctorRepository.GetDoctorsByDepartment(departmentId);
-        return _mapper.Map<IEnumerable<DoctorDto>>(doctors);
+        return _mapper.Map<List<DoctorDto>>(doctors);
     }
 
     public bool AddDoctor(DoctorDto dto)
     {
         var existing = _userRepository.GetByEmail(dto.Email);
-        if (existing == null) return false;
+        if (existing != null) return false;
 
         var user = _mapper.Map<User>(dto);
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
         user.RoleId = 2;
+        user.MustChangePassword = true;
         _userRepository.Add(user);
 
         var doctor = _mapper.Map<Doctor>(dto);
@@ -57,21 +58,15 @@ public class DoctorService : GenericService<Doctor>
 
     public bool UpdateDoctor(DoctorDto dto)
     {
-        var doctor = _doctorRepository.GetDoctorWithUser(dto.Id);
+        var doctor = _doctorRepository.GetDoctorById(dto.Id);
         if (doctor == null) return false;
 
-        doctor.User.Name = dto.Name;
-        doctor.User.Gender = dto.Gender;
-        doctor.User.PhoneNumber = dto.PhoneNumber;
-        doctor.User.Address = dto.PhoneNumber;
-        doctor.User.DateOfBirth = dto.DateOfBirth;
-        _userRepository.Update(doctor.User);
+        // update user properties
+        _mapper.Map(dto, doctor.User);
+        // update doctor properties
+        _mapper.Map(dto, doctor);
 
-        doctor.Specialty = dto.Specity;
-        doctor.LicenseNumber = dto.LicenseNumber;
-        doctor.Fee = dto.Fee;
-        doctor.DepartmentId = dto.DepartmentId;
-        doctor.IsAvailable = dto.IsAvailable;
+        _userRepository.Update(doctor.User);
         _doctorRepository.Update(doctor);
 
         return true;
@@ -79,7 +74,7 @@ public class DoctorService : GenericService<Doctor>
 
     public bool DeactivateDoctor(int id)
     {
-        var doctor = _doctorRepository.GetDoctorWithUser(id);
+        var doctor = _doctorRepository.GetDoctorById(id);
         if (doctor == null) return false;
 
         doctor.User.IsActive = false;

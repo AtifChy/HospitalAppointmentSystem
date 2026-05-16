@@ -1,12 +1,14 @@
-﻿namespace DAL.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class Department
+namespace BLL.DTOs;
+
+public class DepartmentDto
 {
     public int Id { get; set; }
+
+    [Required]
     public string Name { get; set; }
+
     public string? Description { get; set; }
     public bool IsActive { get; set; } = true;
-
-    // Navigation
-    public ICollection<Doctor> Doctors { get; set; } = new HashSet<Doctor>();
 }

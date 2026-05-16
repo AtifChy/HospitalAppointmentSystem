@@ -21,9 +21,11 @@ public class RegisterDto
 
     public string? Gender { get; set; }
     public string? Address { get; set; }
-    public string? PhoneNumber { get; set; }
-    public DateTime DateOfBirth { get; set; }
 
+    [MaxLength(15, ErrorMessage = "Phone number must be 15 digits long")]
+    public string? PhoneNumber { get; set; }
+
+    public DateTime DateOfBirth { get; set; }
     public string? BloodGroup { get; set; }
     public string? EmergencyContact { get; set; }
     public string? MedicalHistory { get; set; }

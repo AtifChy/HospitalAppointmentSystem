@@ -14,7 +14,7 @@ public class GenericRepository<T> where T : class
         _dbSet = context.Set<T>();
     }
 
-    public IEnumerable<T> GetAll()
+    public List<T> GetAll()
     {
         return _dbSet.ToList();
     }

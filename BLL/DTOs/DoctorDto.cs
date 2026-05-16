@@ -23,9 +23,6 @@ public class DoctorDto
     public DateTime DateOfBirth { get; set; }
 
     [Required]
-    public string Specity { get; set; }
-
-    [Required]
     public string LicenseNumber { get; set; }
 
     [Required]
@@ -33,6 +30,7 @@ public class DoctorDto
     public decimal Fee { get; set; }
 
     public int DepartmentId { get; set; }
+    public string? DepartmentName { get; set; }
 
     public bool IsAvailable { get; set; }
 }

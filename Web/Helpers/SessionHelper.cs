@@ -10,6 +10,17 @@ public static class SessionHelper
         session.SetString("UserName", user.Name);
         session.SetString("UserEmail", user.Email);
         session.SetString("UserRole", user.Role);
+        session.SetInt32("MustChangePassword", user.MustChangePassword ? 1 : 0);
+    }
+
+    public static void SetMustChangePassword(ISession session, bool mustChange)
+    {
+        session.SetInt32("MustChangePassword", mustChange ? 1 : 0);
+    }
+
+    public static bool MustChangePassword(ISession session)
+    {
+        return session.GetInt32("MustChangePassword") == 1;
     }
 
     public static void ClearSession(ISession session)

@@ -4,14 +4,14 @@ namespace BLL.Services;
 
 public class GenericService<T> where T : class
 {
-    protected readonly GenericRepository<T> _repository;
+    private readonly GenericRepository<T> _repository;
 
     public GenericService(GenericRepository<T> repository)
     {
         _repository = repository;
     }
 
-    public IEnumerable<T> GetAll()
+    public List<T> GetAll()
     {
         return _repository.GetAll();
     }

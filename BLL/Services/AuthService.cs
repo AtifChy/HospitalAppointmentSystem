@@ -22,6 +22,7 @@ public class AuthService
     {
         var user = _userRepository.GetByEmail(dto.Email);
         if (user == null) return null;
+        if (!user.IsActive) return null;
         if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash)) return null;
         return _mapper.Map<UserDto>(user);
     }
@@ -49,6 +50,7 @@ public class AuthService
         if (!BCrypt.Net.BCrypt.Verify(oldPassword, user.PasswordHash)) return false;
 
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+        user.MustChangePassword = false;
         _userRepository.Update(user);
 
         return true;
