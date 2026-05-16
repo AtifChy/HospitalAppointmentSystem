@@ -1,0 +1,58 @@
+﻿@model List<BLL.DTOs.AdminDto>
+@{
+    ViewData["Title"] = "Admins";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Admins</h2>
+    <a asp-action="Create" class="btn btn-primary">Add New Admin</a>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Gender</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var admin in Model)
+                {
+                    <tr>
+                        <td>@admin.Name</td>
+                        <td>@admin.Email</td>
+                        <td>@admin.PhoneNumber</td>
+                        <td>@admin.Gender</td>
+                        <td>
+                            <span class="badge @(admin.IsActive ? "bg-success" : "bg-danger")">
+                                @(admin.IsActive ? "Active" : "Inactive")
+                            </span>
+                        </td>
+                        <td class="w-25">
+                            <a asp-action="Edit" asp-route-id="@admin.Id" class="btn btn-sm btn-outline-primary">
+                                Edit
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@admin.Id" class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center">No admins found.</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

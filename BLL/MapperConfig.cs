@@ -35,6 +35,7 @@ public static class MapperConfig
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
             .ReverseMap();
         cfg.CreateMap<Department, DepartmentDto>().ReverseMap();
+        cfg.CreateMap<User, AdminDto>().ReverseMap();
     });
 
     public static Mapper GetMapper()
