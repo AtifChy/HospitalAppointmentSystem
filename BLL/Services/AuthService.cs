@@ -35,9 +35,11 @@ public class AuthService
         var user = _mapper.Map<User>(dto);
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
         user.RoleId = 3;
+        user.MustChangePassword = false;
         _userRepository.Add(user);
 
         var patient = _mapper.Map<Patient>(dto);
+        patient.UserId = user.Id;
         _patientRepository.Add(patient);
 
         return true;

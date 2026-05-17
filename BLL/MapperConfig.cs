@@ -36,6 +36,19 @@ public static class MapperConfig
             .ReverseMap();
         cfg.CreateMap<Department, DepartmentDto>().ReverseMap();
         cfg.CreateMap<User, AdminDto>().ReverseMap();
+        cfg.CreateMap<User, PatientDto>()
+            .ReverseMap()
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
+        cfg.CreateMap<Patient, PatientDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+            .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.User.Gender))
+            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.User.PhoneNumber))
+            .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => src.User.DateOfBirth))
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.User.Address))
+            .ReverseMap()
+            .ForMember(dest => dest.User, opt => opt.Ignore())
+            .ForMember(dest => dest.Appointments, opt => opt.Ignore());
     });
 
     public static Mapper GetMapper()

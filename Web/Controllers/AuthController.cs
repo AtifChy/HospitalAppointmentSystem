@@ -32,7 +32,7 @@ public class AuthController : Controller
 
         if (user == null)
         {
-            ModelState.AddModelError("", "Invalid email or password");
+            TempData["ErrorMessage"] = "Invalid email or password";
             return View(dto);
         }
 
@@ -60,7 +60,7 @@ public class AuthController : Controller
         var success = _authService.Register(dto);
         if (!success)
         {
-            ModelState.AddModelError("", "Email already exists");
+            TempData["ErrorMessage"] = "Email already exists";
             return View(dto);
         }
 

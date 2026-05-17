@@ -14,17 +14,16 @@
             </div>
 
             <div class="card-body">
-                <form asp-action="Login" method="post">
+                <form asp-action="Register" method="post">
                     <div class="mb-3">
                         <label asp-for="Name" class="form-label"></label>
-                        <input asp-for="Name" class="form-control" placeholder="Enter your name" value="@Model.Name"/>
+                        <input asp-for="Name" class="form-control" placeholder="Enter your name"/>
                         <span asp-validation-for="Name" class="text-danger small"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Email" class="form-label"></label>
-                        <input asp-for="Email" class="form-control" placeholder="Enter your email"
-                               value="@Model.Email"/>
+                        <input asp-for="Email" class="form-control" placeholder="Enter your email"/>
                         <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
 
@@ -39,12 +38,16 @@
                         <label asp-for="ConfirmPassword" class="form-label"></label>
                         <input asp-for="ConfirmPassword" type="password" class="form-control"
                                placeholder="Confirm your password"/>
-                        <span asp-validation-for="Password" class="text-danger small"></span>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                     </div>
+
+                    @section Scripts {
+                        <partial name="_ValidationScriptsPartial"/>
+                    }
 
                     <div class="mb-3">
                         <label asp-for="DateOfBirth" class="form-label">Date of Birth</label>
-                        <input asp-for="DateOfBirth" type="date" class="form-control" value="@Model.DateOfBirth">
+                        <input asp-for="DateOfBirth" type="date" class="form-control">
                         <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
                     </div>
 
@@ -60,8 +63,7 @@
 
                     <div class="mb-3">
                         <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
-                        <input asp-for="PhoneNumber" class="form-control" placeholder="+1234567890"
-                               value="@Model.PhoneNumber"/>
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="+1234567890"/>
                     </div>
 
                     <div class="mb-3">
@@ -86,8 +88,7 @@
 
                     <div class="mb-3">
                         <label asp-for="EmergencyContact" class="form-label">Emergency Contact</label>
-                        <input asp-for="EmergencyContact" class="form-control" placeholder="+1234567890"
-                               value="@Model.PhoneNumber"/>
+                        <input asp-for="EmergencyContact" class="form-control" placeholder="+1234567890"/>
                     </div>
 
                     <div class="d-grid mt-4">
