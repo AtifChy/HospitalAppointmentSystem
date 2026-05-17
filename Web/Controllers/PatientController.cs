@@ -62,6 +62,17 @@ public class PatientController : Controller
         return RedirectToAction("Index");
     }
 
+    public IActionResult Details(int id)
+    {
+        var adminOnly = AdminOnly();
+        if (adminOnly != null) return adminOnly;
+
+        var patient = _patientService.GetPatientById(id);
+        if (patient == null) return NotFound();
+
+        return View(patient);
+    }
+
     public IActionResult Edit(int id)
     {
         var adminOnly = AdminOnly();

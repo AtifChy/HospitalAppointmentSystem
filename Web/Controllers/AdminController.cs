@@ -62,6 +62,17 @@ public class AdminController : Controller
         return RedirectToAction("Index");
     }
 
+    public IActionResult Details(int id)
+    {
+        var adminOnly = AdminOnly();
+        if (adminOnly != null) return adminOnly;
+
+        var admin = _adminService.GetAdminById(id);
+        if (admin == null) return NotFound();
+
+        return View(admin);
+    }
+
     public IActionResult Edit(int id)
     {
         var adminOnly = AdminOnly();

@@ -41,6 +41,10 @@
                         <td>@patient.BloodGroup</td>
                         <td>@patient.EmergencyContact</td>
                         <td>
+                            <a asp-action="Details" asp-route-id="@patient.Id" class="btn btn-sm btn-outline-info"
+                               title="Details">
+                                👁️
+                            </a>
                             <a asp-action="Edit" asp-route-id="@patient.Id" class="btn btn-sm btn-outline-primary"
                                title="Edit">
                                 📝
