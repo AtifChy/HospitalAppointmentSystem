@@ -68,10 +68,13 @@ public class HomeController : Controller
     {
         if (!SessionHelper.IsDoctor(HttpContext.Session)) return new DoctorDashboardViewModel();
 
-        var doctorId = SessionHelper.GetUserId(HttpContext.Session);
-        if (doctorId == null) return new DoctorDashboardViewModel();
+        var userId = SessionHelper.GetUserId(HttpContext.Session);
+        if (userId == null) return new DoctorDashboardViewModel();
 
-        var appointments = _appointmentService.GetByDoctorId(doctorId.Value);
+        var doctor = _doctorService.GetDoctorByUserId(userId.Value);
+        if (doctor == null) return new DoctorDashboardViewModel();
+
+        var appointments = _appointmentService.GetByDoctorId(doctor.Id);
 
         return new DoctorDashboardViewModel
         {
@@ -91,10 +94,13 @@ public class HomeController : Controller
     {
         if (!SessionHelper.IsPatient(HttpContext.Session)) return new PatientDashboardViewModel();
 
-        var patientId = SessionHelper.GetUserId(HttpContext.Session);
-        if (patientId == null) return new PatientDashboardViewModel();
+        var userId = SessionHelper.GetUserId(HttpContext.Session);
+        if (userId == null) return new PatientDashboardViewModel();
 
-        var appointments = _appointmentService.GetByPatientId(patientId.Value);
+        var patient = _patientService.GetPatientByUserId(userId.Value);
+        if (patient == null) return new PatientDashboardViewModel();
+
+        var appointments = _appointmentService.GetByPatientId(patient.Id);
 
         return new PatientDashboardViewModel
         {
@@ -118,5 +124,41 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    [HttpPost]
+    public IActionResult ConfirmAppointment(int id)
+    {
+        if (!SessionHelper.IsDoctor(HttpContext.Session)) return RedirectToAction("Index", "Home");
+
+        var success = _appointmentService.UpdateStatus(id, "Confirmed");
+        if (success) TempData["SuccessMessage"] = "Appointment confirmed";
+        else TempData["ErrorMessage"] = "Failed to confirm appointment";
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public IActionResult CancelAppointment(int id)
+    {
+        if (!SessionHelper.IsDoctor(HttpContext.Session)) return RedirectToAction("Index", "Home");
+
+        var success = _appointmentService.UpdateStatus(id, "Cancelled");
+        if (success) TempData["SuccessMessage"] = "Appointment cancelled";
+        else TempData["ErrorMessage"] = "Failed to cancel appointment";
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public IActionResult CompleteAppointment(int id)
+    {
+        if (!SessionHelper.IsDoctor(HttpContext.Session)) return RedirectToAction("Index", "Home");
+
+        var success = _appointmentService.UpdateStatus(id, "Completed");
+        if (success) TempData["SuccessMessage"] = "Appointment completed";
+        else TempData["ErrorMessage"] = "Failed to complete appointment";
+
+        return RedirectToAction("Index");
     }
 }

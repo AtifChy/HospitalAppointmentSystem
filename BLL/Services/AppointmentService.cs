@@ -55,4 +55,19 @@ public class AppointmentService : GenericService<Appointment>
         _appointmentRepository.Add(appointment);
         return true;
     }
+
+    public bool UpdateStatus(int appointmentId, string status)
+    {
+        var appointment = _appointmentRepository.GetById(appointmentId);
+        if (appointment == null) return false;
+
+        if (Enum.TryParse<AppointmentStatus>(status, true, out var appointmentStatus))
+        {
+            appointment.Status = appointmentStatus;
+            _appointmentRepository.Update(appointment);
+            return true;
+        }
+
+        return false;
+    }
 }

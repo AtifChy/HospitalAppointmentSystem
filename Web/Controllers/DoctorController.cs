@@ -25,12 +25,34 @@ public class DoctorController : Controller
         return null;
     }
 
-    public IActionResult Index()
+    /*public IActionResult Index()
     {
         var adminOnly = AdminOnly();
         if (adminOnly != null) return adminOnly;
 
         var doctors = _doctorService.GetAllDoctors();
+        return View(doctors);
+    }*/
+
+    public IActionResult Index(string sortOrder)
+    {
+        var adminOnly = AdminOnly();
+        if (adminOnly != null) return adminOnly;
+
+        ViewBag.NameSort = sortOrder == "name_desc" ? "name_asc" : "name_desc";
+        ViewBag.DepartmentSort = sortOrder == "dept_desc" ? "dept_asc" : "dept_desc";
+        ViewBag.FeeSort = sortOrder == "fee_desc" ? "fee_asc" : "fee_desc";
+
+        var doctors = _doctorService.GetAllDoctors();
+        doctors = sortOrder switch
+        {
+            "name_desc" => doctors.OrderByDescending(d => d.Name).ToList(),
+            "dept_desc" => doctors.OrderByDescending(d => d.DepartmentName).ToList(),
+            "dept_asc" => doctors.OrderBy(d => d.DepartmentName).ToList(),
+            "fee_desc" => doctors.OrderByDescending(d => d.Fee).ToList(),
+            "fee_asc" => doctors.OrderBy(d => d.Fee).ToList(),
+            _ => doctors.OrderBy(d => d.Name).ToList()
+        };
         return View(doctors);
     }
 
@@ -65,6 +87,17 @@ public class DoctorController : Controller
 
         TempData["SuccessMessage"] = "Doctor added successfully";
         return RedirectToAction("Index");
+    }
+
+    public IActionResult Details(int id)
+    {
+        var adminOnly = AdminOnly();
+        if (adminOnly != null) return adminOnly;
+
+        var doctor = _doctorService.GetDoctorById(id);
+        if (doctor == null) return NotFound();
+
+        return View(doctor);
     }
 
     public IActionResult Edit(int id)

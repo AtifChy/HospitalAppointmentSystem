@@ -19,62 +19,70 @@
 
 <div class="card shadow">
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">Name</a>
+                </th>
+                <th>Email</th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.DepartmentSort">Department</a>
+                </th>
+                <th>Phone</th>
+                <th>License</th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.FeeSort">Fee</a>
+                </th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var doctor in Model)
+            {
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Department</th>
-                    <th>Phone</th>
-                    <th>License</th>
-                    <th>Fee</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var doctor in Model)
-                {
-                    <tr>
-                        <td>@doctor.Name</td>
-                        <td>@doctor.Email</td>
-                        <td>@doctor.DepartmentName</td>
-                        <td>@doctor.PhoneNumber</td>
-                        <td>@doctor.LicenseNumber</td>
-                        <td>@doctor.Fee.ToString("C")</td>
-                        <td>
+                    <td>@doctor.Name</td>
+                    <td>@doctor.Email</td>
+                    <td>@doctor.DepartmentName</td>
+                    <td>@doctor.PhoneNumber</td>
+                    <td>@doctor.LicenseNumber</td>
+                    <td>@doctor.Fee.ToString("C")</td>
+                    <td>
                             <span class="badge @(doctor.IsAvailable ? "bg-success" : "bg-danger")">
                                 @(doctor.IsAvailable ? "Available" : "Not Available")
                             </span>
-                        </td>
-                        <td class="w-25">
-                            <a asp-action="Edit" asp-route-id="@doctor.Id" class="btn btn-sm btn-outline-primary"
-                               title="Edit">
-                                📝
-                            </a>
-                            <form asp-action="MarkForPasswordChange" asp-route-id="@doctor.Id" method="post"
-                                  class="d-inline">
-                                <button type="submit" class="btn btn-sm btn-outline-warning"
-                                        title="Mark for password change">
-                                    🔑
-                                </button>
-                            </form>
-                            <a asp-action="Delete" asp-route-id="@doctor.Id" class="btn btn-sm btn-outline-danger"
-                               title="Delete">
-                                🗑️
-                            </a>
-                        </td>
-                    </tr>
-                }
-                @if (!Model.Any())
-                {
-                    <tr>
-                        <td colspan="8" class="text-center">No doctors found.</td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        </div>
+                    </td>
+                    <td class="w-25">
+                        <a asp-action="Details" asp-route-id="@doctor.Id" class="btn btn-sm btn-info"
+                           title="Details">
+                            👁️
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@doctor.Id" class="btn btn-sm btn-primary"
+                           title="Edit">
+                            ✍️
+                        </a>
+                        <form asp-action="MarkForPasswordChange" asp-route-id="@doctor.Id" method="post"
+                              class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-dark"
+                                    title="Mark for password change">
+                                🔑
+                            </button>
+                        </form>
+                        <a asp-action="Delete" asp-route-id="@doctor.Id" class="btn btn-sm btn-danger"
+                           title="Delete">
+                            🗑️
+                        </a>
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="8" class="text-center">No doctors found.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
     </div>
 </div>

@@ -56,6 +56,7 @@
                                 <th>Time</th>
                                 <th>Patient</th>
                                 <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -63,20 +64,49 @@
                             {
                                 <tr>
                                     <td>@app.Date.ToShortDateString()</td>
-                                    <td>@app.TimeSlot</td>
+                                    <td>@(DateTime.Parse(app.TimeSlot).ToString("hh:mm tt"))</td>
                                     <td>@app.PatientName</td>
                                     <td>
-                                            <span
-                                                class="badge @(app.Status == "Confirmed" ? "bg-success" : app.Status == "Pending" ? "bg-warning" : "bg-secondary")">
-                                                @app.Status
-                                            </span>
+                                        <span
+                                            class="badge @(app.Status == "Confirmed" ? "bg-success" : app.Status == "Pending" ? "bg-warning" : "bg-secondary")">
+                                            @app.Status
+                                        </span>
+                                    </td>
+                                    <td class="w-auto">
+                                        @if (app.Status == "Pending")
+                                        {
+                                            <form asp-action="ConfirmAppointment" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@app.Id"/>
+                                                <button type="submit" class="btn btn-sm btn-outline-success"
+                                                        title="Confirm">✔️
+                                                </button>
+                                            </form>
+                                        }
+                                        @if (app.Status == "Confirmed")
+                                        {
+                                            <form asp-action="CompleteAppointment" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@app.Id"/>
+                                                <button type="submit" class="btn btn-sm btn-outline-primary"
+                                                        title="Complete">✅
+                                                </button>
+                                            </form>
+                                        }
+                                        @if (app.Status != "Cancelled" && app.Status != "Completed")
+                                        {
+                                            <form asp-action="CancelAppointment" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@app.Id"/>
+                                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                        title="Cancel">❌
+                                                </button>
+                                            </form>
+                                        }
                                     </td>
                                 </tr>
                             }
                             @if (!Model.UpcomingAppointments.Any())
                             {
                                 <tr>
-                                    <td colspan="4" class="text-center">No upcoming appointments</td>
+                                    <td colspan="5" class="text-center">No upcoming appointments</td>
                                 </tr>
                             }
                             </tbody>

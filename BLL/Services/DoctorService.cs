@@ -24,6 +24,13 @@ public class DoctorService : GenericService<Doctor>
         return _mapper.Map<List<DoctorDto>>(doctors);
     }
 
+    public DoctorDto? GetDoctorByUserId(int id)
+    {
+        var doctor = _doctorRepository.GetDoctorByUserId(id);
+        if (doctor == null) return null;
+        return _mapper.Map<DoctorDto>(doctor);
+    }
+
     public DoctorDto? GetDoctorById(int id)
     {
         var doctor = _doctorRepository.GetDoctorById(id);

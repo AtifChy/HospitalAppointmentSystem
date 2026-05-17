@@ -34,4 +34,12 @@ public class DoctorRepository : GenericRepository<Doctor>
             .Include(d => d.Department)
             .FirstOrDefault(d => d.Id == id);
     }
+
+    public Doctor? GetDoctorByUserId(int id)
+    {
+        return _context.Doctors
+            .Include(d => d.User)
+            .Include(d => d.Department)
+            .FirstOrDefault(d => d.User.Id == id);
+    }
 }
