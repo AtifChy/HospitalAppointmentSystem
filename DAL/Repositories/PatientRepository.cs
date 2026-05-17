@@ -23,4 +23,11 @@ public class PatientRepository : GenericRepository<Patient>
             .Include(p => p.User)
             .FirstOrDefault(p => p.Id == id);
     }
+
+    public Patient? GetPatientByUserId(int id)
+    {
+        return _context.Patients
+            .Include(p => p.User)
+            .FirstOrDefault(p => p.UserId == id);
+    }
 }

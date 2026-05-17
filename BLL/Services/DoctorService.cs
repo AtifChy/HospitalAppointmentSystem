@@ -31,9 +31,9 @@ public class DoctorService : GenericService<Doctor>
         return _mapper.Map<DoctorDto>(doctor);
     }
 
-    public List<DoctorDto> GetDoctorsByDepartment(int departmentId)
+    public List<DoctorDto> GetDoctorsByDepartmentId(int departmentId)
     {
-        var doctors = _doctorRepository.GetDoctorsByDepartment(departmentId);
+        var doctors = _doctorRepository.GetDoctorsByDepartmentId(departmentId);
         return _mapper.Map<List<DoctorDto>>(doctors);
     }
 

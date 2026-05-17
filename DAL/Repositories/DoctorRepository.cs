@@ -10,7 +10,7 @@ public class DoctorRepository : GenericRepository<Doctor>
     {
     }
 
-    public List<Doctor> GetDoctorsByDepartment(int departmentId)
+    public List<Doctor> GetDoctorsByDepartmentId(int departmentId)
     {
         return _context.Doctors
             .Include(d => d.User)

@@ -39,4 +39,20 @@ public class AppointmentService : GenericService<Appointment>
         var appointments = _appointmentRepository.GetByPatientId(patientId);
         return _mapper.Map<List<AppointmentDto>>(appointments);
     }
+
+    public bool BookAppointment(BookAppointmentDto dto, int patientId)
+    {
+        var appointment = new Appointment
+        {
+            DoctorId = dto.DoctorId,
+            PatientId = patientId,
+            Date = dto.Date,
+            TimeSlot = TimeSpan.Parse(dto.TimeSlot),
+            Notes = dto.Notes,
+            Status = AppointmentStatus.Pending
+        };
+
+        _appointmentRepository.Add(appointment);
+        return true;
+    }
 }

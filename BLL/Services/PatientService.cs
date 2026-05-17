@@ -31,6 +31,13 @@ public class PatientService : GenericService<Patient>
         return _mapper.Map<PatientDto>(patient);
     }
 
+    public PatientDto? GetPatientByUserId(int id)
+    {
+        var patient = _patientRepository.GetPatientByUserId(id);
+        if (patient == null) return null;
+        return _mapper.Map<PatientDto>(patient);
+    }
+
     public bool AddPatient(PatientDto dto)
     {
         var existing = _userRepository.GetByEmail(dto.Email);
@@ -62,6 +69,12 @@ public class PatientService : GenericService<Patient>
         _userRepository.Update(patient.User);
         _patientRepository.Update(patient);
 
+        return true;
+    }
+
+    public bool DeletePatient(int id)
+    {
+        _patientRepository.Delete(id);
         return true;
     }
 
