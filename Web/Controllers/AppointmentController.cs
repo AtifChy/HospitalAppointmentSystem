@@ -135,9 +135,9 @@ public class AppointmentController : Controller
     }
 
     [HttpGet]
-    public JsonResult GetDoctorsByDepartment(int departmentId)
+    public JsonResult GetActiveDoctorsByDepartment(int departmentId)
     {
-        var doctors = _doctorService.GetDoctorsByDepartmentId(departmentId);
+        var doctors = _doctorService.GetActiveDoctorsByDepartmentId(departmentId);
         return Json(doctors.Select(d => new
         {
             id = d.Id,

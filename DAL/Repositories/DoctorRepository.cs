@@ -10,11 +10,12 @@ public class DoctorRepository : GenericRepository<Doctor>
     {
     }
 
-    public List<Doctor> GetDoctorsByDepartmentId(int departmentId)
+    public List<Doctor> GetActiveDoctorsByDepartmentId(int departmentId)
     {
         return _context.Doctors
             .Include(d => d.User)
             .Include(d => d.Department)
+            .Where(d => d.IsAvailable == true)
             .Where(d => d.DepartmentId == departmentId)
             .ToList();
     }

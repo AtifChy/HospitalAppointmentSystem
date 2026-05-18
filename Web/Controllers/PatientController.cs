@@ -29,11 +29,14 @@ public class PatientController : Controller
         if (adminOnly != null) return adminOnly;
 
         ViewBag.NameSort = sortOrder == "name_desc" ? "name_asc" : "name_desc";
+        ViewBag.BloodGroupSort = sortOrder == "blood_desc" ? "blood_asc" : "blood_desc";
 
         var patients = _patientService.GetAllPatients();
         patients = sortOrder switch
         {
             "name_desc" => patients.OrderByDescending(p => p.Name).ToList(),
+            "blood_desc" => patients.OrderByDescending(p => p.BloodGroup).ToList(),
+            "blood_asc" => patients.OrderBy(p => p.BloodGroup).ToList(),
             _ => patients.OrderBy(p => p.Name).ToList()
         };
 
