@@ -19,62 +19,60 @@
 
 <div class="card shadow">
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">Name</a>
+                </th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.BloodGroupSort">Blood Group</a>
+                </th>
+                <th>Emergency Contact</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var patient in Model)
+            {
                 <tr>
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">Name</a>
-                    </th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.BloodGroupSort">Blood Group</a>
-                    </th>
-                    <th>Emergency Contact</th>
-                    <th>Actions</th>
+                    <td>@patient.Name</td>
+                    <td>@patient.Email</td>
+                    <td>@patient.PhoneNumber</td>
+                    <td>@patient.BloodGroup</td>
+                    <td>@patient.EmergencyContact</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@patient.Id" class="btn btn-sm btn-outline-info"
+                           title="Details">
+                            👁️
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@patient.Id" class="btn btn-sm btn-outline-primary"
+                           title="Edit">
+                            📝
+                        </a>
+                        <form asp-action="MarkForPasswordChange" asp-route-id="@patient.Id" method="post"
+                              class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-warning"
+                                    title="Mark for password change">
+                                🔑
+                            </button>
+                        </form>
+                        <a asp-action="Delete" asp-route-id="@patient.Id" class="btn btn-sm btn-outline-danger"
+                           title="Delete">
+                            🗑️
+                        </a>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                @foreach (var patient in Model)
-                {
-                    <tr>
-                        <td>@patient.Name</td>
-                        <td>@patient.Email</td>
-                        <td>@patient.PhoneNumber</td>
-                        <td>@patient.BloodGroup</td>
-                        <td>@patient.EmergencyContact</td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@patient.Id" class="btn btn-sm btn-outline-info"
-                               title="Details">
-                                👁️
-                            </a>
-                            <a asp-action="Edit" asp-route-id="@patient.Id" class="btn btn-sm btn-outline-primary"
-                               title="Edit">
-                                📝
-                            </a>
-                            <form asp-action="MarkForPasswordChange" asp-route-id="@patient.Id" method="post"
-                                  class="d-inline">
-                                <button type="submit" class="btn btn-sm btn-outline-warning"
-                                        title="Mark for password change">
-                                    🔑
-                                </button>
-                            </form>
-                            <a asp-action="Delete" asp-route-id="@patient.Id" class="btn btn-sm btn-outline-danger"
-                               title="Delete">
-                                🗑️
-                            </a>
-                        </td>
-                    </tr>
-                }
-                @if (!Model.Any())
-                {
-                    <tr>
-                        <td colspan="6" class="text-center">No patients found.</td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        </div>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center">No patients found.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
     </div>
 </div>

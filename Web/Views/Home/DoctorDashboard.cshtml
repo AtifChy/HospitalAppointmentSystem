@@ -51,83 +51,81 @@
             {
                 <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
             }
-            
+
             <div class="card shadow">
                 <div class="card-header bg-white">
                     <h5 class="mb-0">Upcoming Appointments</h5>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Patient</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var app in Model.UpcomingAppointments)
+                        {
                             <tr>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Patient</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach (var app in Model.UpcomingAppointments)
-                            {
-                                <tr>
-                                    <td>@app.Date.ToShortDateString()</td>
-                                    <td>@(DateTime.Parse(app.TimeSlot).ToString("hh:mm tt"))</td>
-                                    <td>@app.PatientName</td>
-                                    <td>
+                                <td>@app.Date.ToShortDateString()</td>
+                                <td>@(DateTime.Parse(app.TimeSlot).ToString("hh:mm tt"))</td>
+                                <td>@app.PatientName</td>
+                                <td>
                                         <span
                                             class="badge @(app.Status == "Confirmed" ? "bg-success" : app.Status == "Pending" ? "bg-warning" : "bg-secondary")">
                                             @app.Status
                                         </span>
-                                    </td>
-                                    <td class="w-auto">
-                                        <a asp-controller="Patient" asp-action="Details" asp-route-id="@app.PatientId"
-                                           class="btn btn-sm btn-outline-info" title="Patient Details">👁️</a>
-                                        @if (app.Status == "Pending")
-                                        {
-                                            <form asp-action="ConfirmAppointment" method="post" class="d-inline">
-                                                <input type="hidden" name="id" value="@app.Id"/>
-                                                <button type="submit" class="btn btn-sm btn-outline-success"
-                                                        title="Confirm">✔️
-                                                </button>
-                                            </form>
-                                        }
-                                        @if (app.Status == "Confirmed")
-                                        {
-                                            <form asp-action="CompleteAppointment" method="post" class="d-inline">
-                                                <input type="hidden" name="id" value="@app.Id"/>
-                                                <button type="submit" class="btn btn-sm btn-outline-primary"
-                                                        title="Complete">✅
-                                                </button>
-                                            </form>
-                                            <a asp-controller="Appointment"
-                                               asp-action="AddPrescription"
-                                               asp-route-id="@app.Id"
-                                               class="btn btn-sm btn-outline-warning"
-                                               title="Prescription">💊</a>
-                                        }
-                                        @if (app.Status != "Cancelled" && app.Status != "Completed")
-                                        {
-                                            <form asp-action="CancelAppointment" method="post" class="d-inline">
-                                                <input type="hidden" name="id" value="@app.Id"/>
-                                                <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                        title="Cancel">❌
-                                                </button>
-                                            </form>
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                            @if (!Model.UpcomingAppointments.Any())
-                            {
-                                <tr>
-                                    <td colspan="5" class="text-center">No upcoming appointments</td>
-                                </tr>
-                            }
-                            </tbody>
-                        </table>
-                    </div>
+                                </td>
+                                <td class="w-auto">
+                                    <a asp-controller="Patient" asp-action="Details" asp-route-id="@app.PatientId"
+                                       class="btn btn-sm btn-outline-info" title="Patient Details">👁️</a>
+                                    @if (app.Status == "Pending")
+                                    {
+                                        <form asp-action="ConfirmAppointment" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@app.Id"/>
+                                            <button type="submit" class="btn btn-sm btn-outline-success"
+                                                    title="Confirm">✔️
+                                            </button>
+                                        </form>
+                                    }
+                                    @if (app.Status == "Confirmed")
+                                    {
+                                        <form asp-action="CompleteAppointment" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@app.Id"/>
+                                            <button type="submit" class="btn btn-sm btn-outline-primary"
+                                                    title="Complete">✅
+                                            </button>
+                                        </form>
+                                        <a asp-controller="Appointment"
+                                           asp-action="AddPrescription"
+                                           asp-route-id="@app.Id"
+                                           class="btn btn-sm btn-outline-warning"
+                                           title="Prescription">💊</a>
+                                    }
+                                    @if (app.Status != "Cancelled" && app.Status != "Completed")
+                                    {
+                                        <form asp-action="CancelAppointment" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@app.Id"/>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                    title="Cancel">❌
+                                            </button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        @if (!Model.UpcomingAppointments.Any())
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center">No upcoming appointments</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

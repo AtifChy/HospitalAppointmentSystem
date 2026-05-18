@@ -19,66 +19,64 @@
 
 <div class="card shadow">
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">Name</a>
+                </th>
+                <th>Email</th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.GenderSort">Gender</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.StatusSort">Status</a>
+                </th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var admin in Model)
+            {
                 <tr>
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">Name</a>
-                    </th>
-                    <th>Email</th>
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.GenderSort">Gender</a>
-                    </th>
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.StatusSort">Status</a>
-                    </th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var admin in Model)
-                {
-                    <tr>
-                        <td>@admin.Name</td>
-                        <td>@admin.Email</td>
-                        <td>@admin.Gender</td>
-                        <td>
+                    <td>@admin.Name</td>
+                    <td>@admin.Email</td>
+                    <td>@admin.Gender</td>
+                    <td>
                             <span class="badge @(admin.IsActive ? "bg-success" : "bg-danger")">
                                 @(admin.IsActive ? "Active" : "Inactive")
                             </span>
-                        </td>
-                        <td class="w-25">
-                            <a asp-action="Details" asp-route-id="@admin.Id" class="btn btn-sm btn-outline-info"
-                               title="Details">
-                                👁️
-                            </a>
-                            <a asp-action="Edit" asp-route-id="@admin.Id" class="btn btn-sm btn-outline-primary"
-                               title="Edit">
-                                📝
-                            </a>
-                            <form asp-action="MarkForPasswordChange" asp-route-id="@admin.Id" method="post"
-                                  class="d-inline">
-                                <button type="submit" class="btn btn-sm btn-outline-warning"
-                                        title="Mark for password change">
-                                    🔑
-                                </button>
-                            </form>
-                            <a asp-action="Delete" asp-route-id="@admin.Id" class="btn btn-sm btn-outline-danger"
-                               title="Delete">
-                                🗑️
-                            </a>
-                        </td>
-                    </tr>
-                }
-                @if (!Model.Any())
-                {
-                    <tr>
-                        <td colspan="6" class="text-center">No admins found.</td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        </div>
+                    </td>
+                    <td class="w-25">
+                        <a asp-action="Details" asp-route-id="@admin.Id" class="btn btn-sm btn-outline-info"
+                           title="Details">
+                            👁️
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@admin.Id" class="btn btn-sm btn-outline-primary"
+                           title="Edit">
+                            📝
+                        </a>
+                        <form asp-action="MarkForPasswordChange" asp-route-id="@admin.Id" method="post"
+                              class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-warning"
+                                    title="Mark for password change">
+                                🔑
+                            </button>
+                        </form>
+                        <a asp-action="Delete" asp-route-id="@admin.Id" class="btn btn-sm btn-outline-danger"
+                           title="Delete">
+                            🗑️
+                        </a>
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center">No admins found.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
     </div>
 </div>

@@ -10,6 +10,16 @@ public class AppointmentRepository : GenericRepository<Appointment>
     {
     }
 
+    public List<Appointment> GetAllAppointments()
+    {
+        return _context.Appointments
+            .Include(a => a.Doctor).ThenInclude(d => d.User)
+            .Include(a => a.Doctor).ThenInclude(d => d.Department)
+            .Include(a => a.Patient).ThenInclude(p => p.User)
+            .Include(a => a.Prescription)
+            .ToList();
+    }
+
     public List<Appointment> GetRecentAppointments(int count)
     {
         return _context.Appointments
@@ -25,6 +35,7 @@ public class AppointmentRepository : GenericRepository<Appointment>
     {
         return _context.Appointments
             .Include(a => a.Doctor).ThenInclude(d => d.User)
+            .Include(a => a.Doctor).ThenInclude(d => d.Department)
             .Include(a => a.Patient).ThenInclude(p => p.User)
             .Include(a => a.Prescription)
             .FirstOrDefault(a => a.Id == id);

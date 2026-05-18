@@ -1,0 +1,130 @@
+﻿@using Web.Helpers
+@model List<BLL.DTOs.AppointmentDto>
+@{
+    ViewData["Title"] = "Appointments";
+    var isAdmin = SessionHelper.IsAdmin(Context.Session);
+    var isDoctor = SessionHelper.IsDoctor(Context.Session);
+    var isPatient = SessionHelper.IsPatient(Context.Session);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Appointments</h2>
+    @if (isPatient)
+    {
+        <a asp-action="Book" class="btn btn-primary">Book New Appointment</a>
+    }
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="card shadow">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.DateSort">Date</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.TimeSort">Time</a>
+                </th>
+                @if (!isDoctor)
+                {
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.DoctorSort">Doctor</a>
+                    </th>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.DeptSort">Department</a>
+                    </th>
+                }
+                @if (!isPatient)
+                {
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.PatientSort">Patient</a>
+                    </th>
+                }
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.StatusSort">Status</a>
+                </th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var app in Model)
+            {
+                <tr>
+                    <td>@app.Date.ToShortDateString()</td>
+                    <td>@app.TimeSlot</td>
+                    @if (!isDoctor)
+                    {
+                        <td>@app.DoctorName</td>
+                        <td>@app.Department</td>
+                    }
+                    @if (!isPatient)
+                    {
+                        <td>@app.PatientName</td>
+                    }
+                    <td>
+                            <span
+                                class="badge @(app.Status == "Confirmed" ? "bg-success" : app.Status == "Pending" ? "bg-warning" : "bg-secondary")">
+                                @app.Status
+                            </span>
+                    </td>
+                    <td>
+                        <div class="d-flex">
+                            @if (isDoctor && (app.Status == "Confirmed" || app.Status == "Completed"))
+                            {
+                                <a asp-action="AddPrescription" asp-route-id="@app.Id"
+                                   class="btn btn-sm btn-outline-primary" title="Prescription">
+                                    💊
+                                </a>
+                            }
+                            @if (isDoctor && app.Status == "Pending")
+                            {
+                                <form asp-controller="Home" asp-action="ConfirmAppointment"
+                                      asp-route-id="@app.Id" method="post">
+                                    <button type="submit" class="btn btn-sm btn-outline-success" title="Confirm">✅
+                                    </button>
+                                </form>
+                                <form asp-controller="Home" asp-action="CancelAppointment"
+                                      asp-route-id="@app.Id" method="post">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Cancel">❌
+                                    </button>
+                                </form>
+                            }
+                            @if (isDoctor && app.Status == "Confirmed")
+                            {
+                                <form asp-controller="Home" asp-action="CompleteAppointment"
+                                      asp-route-id="@app.Id" method="post">
+                                    <button type="submit" class="btn btn-sm btn-outline-info" title="Complete">🏁
+                                    </button>
+                                </form>
+                            }
+                            @if (app.Prescription != null)
+                            {
+                                <a asp-action="ViewPrescription" asp-route-id="@app.Id"
+                                   class="btn btn-sm btn-outline-info" title="View">
+                                    💊
+                                </a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="7" class="text-center">No appointments found.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

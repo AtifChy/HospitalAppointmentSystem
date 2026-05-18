@@ -25,6 +25,63 @@ public class AppointmentController : Controller
         _departmentService = departmentService;
     }
 
+    public IActionResult Index(string sortOrder)
+    {
+        if (!SessionHelper.IsLoggedIn(HttpContext.Session))
+            return RedirectToAction("Login", "Auth");
+
+        ViewBag.DateSort = sortOrder == "date_desc" ? "date_asc" : "date_desc";
+        ViewBag.TimeSort = sortOrder == "time_desc" ? "time_asc" : "time_desc";
+        ViewBag.DoctorSort = sortOrder == "doctor_desc" ? "doctor_asc" : "doctor_desc";
+        ViewBag.PatientSort = sortOrder == "patient_desc" ? "patient_asc" : "patient_desc";
+        ViewBag.DepartmentSort = sortOrder == "department_desc" ? "department_asc" : "department_desc";
+        ViewBag.StatusSort = sortOrder == "status_desc" ? "status_asc" : "status_desc";
+
+        var userId = SessionHelper.GetUserId(HttpContext.Session);
+        if (userId == null) return RedirectToAction("Login", "Auth");
+
+        List<AppointmentDto> appointments;
+
+        if (SessionHelper.IsAdmin(HttpContext.Session))
+        {
+            appointments = _appointmentService.GetAllAppointments();
+        }
+        else if (SessionHelper.IsDoctor(HttpContext.Session))
+        {
+            var doctor = _doctorService.GetDoctorByUserId(userId.Value);
+            if (doctor == null) return RedirectToAction("Login", "Auth");
+            appointments = _appointmentService.GetByDoctorId(doctor.Id);
+        }
+        else if (SessionHelper.IsPatient(HttpContext.Session))
+        {
+            var patient = _patientService.GetPatientByUserId(userId.Value);
+            if (patient == null) return RedirectToAction("Login", "Auth");
+            appointments = _appointmentService.GetByPatientId(patient.Id);
+        }
+        else
+        {
+            return RedirectToAction("Login", "Auth");
+        }
+
+        appointments = sortOrder switch
+        {
+            "date_desc" => appointments.OrderByDescending(a => a.Date).ToList(),
+            "time_asc" => appointments.OrderBy(a => a.TimeSlot).ToList(),
+            "time_desc" => appointments.OrderByDescending(a => a.TimeSlot).ToList(),
+            "doctor_asc" => appointments.OrderBy(a => a.DoctorName).ToList(),
+            "doctor_desc" => appointments.OrderByDescending(a => a.DoctorName).ToList(),
+            "dept_asc" => appointments.OrderBy(a => a.Department).ToList(),
+            "dept_desc" => appointments.OrderByDescending(a => a.Department).ToList(),
+            "patient_asc" => appointments.OrderBy(a => a.PatientName).ToList(),
+            "patient_desc" => appointments.OrderByDescending(a => a.PatientName).ToList(),
+            "status_asc" => appointments.OrderBy(a => a.Status).ToList(),
+            "status_desc" => appointments.OrderByDescending(a => a.Status).ToList(),
+            _ => appointments.OrderBy(a => a.Date).ToList()
+        };
+
+        return View(appointments);
+    }
+
     public IActionResult Book()
     {
         if (!SessionHelper.IsPatient(HttpContext.Session))
@@ -107,6 +164,22 @@ public class AppointmentController : Controller
         };
 
         return View(dto);
+    }
+
+    [HttpGet]
+    public IActionResult ViewPrescription(int id)
+    {
+        if (!SessionHelper.IsLoggedIn(HttpContext.Session))
+            return RedirectToAction("Login", "Auth");
+
+        var appointment = _appointmentService.GetAppointmentWithDetails(id);
+        if (appointment == null)
+        {
+            TempData["ErrorMessage"] = "Appointment not found";
+            return RedirectToAction("Index", "Home");
+        }
+
+        return View(appointment);
     }
 
     [HttpPost]

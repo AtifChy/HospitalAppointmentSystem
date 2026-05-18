@@ -21,7 +21,7 @@ public class AppointmentService : GenericService<Appointment>
 
     public List<AppointmentDto> GetAllAppointments()
     {
-        var appointments = _appointmentRepository.GetAll();
+        var appointments = _appointmentRepository.GetAllAppointments();
         return _mapper.Map<List<AppointmentDto>>(appointments);
     }
 

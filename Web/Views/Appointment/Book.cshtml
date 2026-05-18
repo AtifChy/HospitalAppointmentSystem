@@ -87,7 +87,7 @@
                 return;
             }
 
-            fetch(`/Appointment/GetDoctorsByDepartment?departmentId=${deptId}`)
+            fetch(`/Appointment/GetActiveDoctorsByDepartment?departmentId=${deptId}`)
                 .then(response => response.json())
                 .then(data => {
                     doctorSelect.innerHTML = '<option value="">Select Doctor</option>';
