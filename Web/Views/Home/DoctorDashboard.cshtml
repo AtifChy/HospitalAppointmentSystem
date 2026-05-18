@@ -73,6 +73,8 @@
                                         </span>
                                     </td>
                                     <td class="w-auto">
+                                        <a asp-controller="Patient" asp-action="Details" asp-route-id="@app.PatientId"
+                                           class="btn btn-sm btn-outline-info" title="Patient Details">👁️</a>
                                         @if (app.Status == "Pending")
                                         {
                                             <form asp-action="ConfirmAppointment" method="post" class="d-inline">
@@ -90,6 +92,11 @@
                                                         title="Complete">✅
                                                 </button>
                                             </form>
+                                            <a asp-controller="Appointment"
+                                               asp-action="AddPrescription"
+                                               asp-route-id="@app.Id"
+                                               class="btn btn-sm btn-outline-warning"
+                                               title="Prescription">💊</a>
                                         }
                                         @if (app.Status != "Cancelled" && app.Status != "Completed")
                                         {

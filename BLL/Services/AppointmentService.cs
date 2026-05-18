@@ -9,10 +9,13 @@ public class AppointmentService : GenericService<Appointment>
 {
     private readonly AppointmentRepository _appointmentRepository;
     private readonly Mapper _mapper;
+    private readonly PrescriptionRepository _prescriptionRepository;
 
-    public AppointmentService(AppointmentRepository appointmentRepository) : base(appointmentRepository)
+    public AppointmentService(AppointmentRepository appointmentRepository,
+        PrescriptionRepository prescriptionRepository) : base(appointmentRepository)
     {
         _appointmentRepository = appointmentRepository;
+        _prescriptionRepository = prescriptionRepository;
         _mapper = MapperConfig.GetMapper();
     }
 
@@ -26,6 +29,13 @@ public class AppointmentService : GenericService<Appointment>
     {
         var appointments = _appointmentRepository.GetRecentAppointments(count);
         return _mapper.Map<List<AppointmentDto>>(appointments);
+    }
+
+    public AppointmentDto? GetAppointmentWithDetails(int id)
+    {
+        var appointment = _appointmentRepository.GetAppointmentWithDetails(id);
+        if (appointment == null) return null;
+        return _mapper.Map<AppointmentDto>(appointment);
     }
 
     public List<AppointmentDto> GetByDoctorId(int doctorId)
@@ -53,6 +63,39 @@ public class AppointmentService : GenericService<Appointment>
         };
 
         _appointmentRepository.Add(appointment);
+        return true;
+    }
+
+    public bool SavePrescription(PrescriptionDto dto, int doctorId)
+    {
+        var appointment = _appointmentRepository.GetAppointmentWithDetails(dto.AppointmentId);
+        if (appointment == null) return false;
+
+        if (appointment.Status != AppointmentStatus.Confirmed &&
+            appointment.Status != AppointmentStatus.Completed) return false;
+
+        if (appointment.Prescription == null)
+        {
+            // create prescription
+            var prescription = new Prescription
+            {
+                AppointmentId = dto.AppointmentId,
+                DoctorId = doctorId,
+                Medication = dto.Medication,
+                Dosage = dto.Dosage,
+                Instruction = dto.Instruction
+            };
+            _prescriptionRepository.Add(prescription);
+        }
+        else
+        {
+            // update prescription
+            appointment.Prescription.Medication = dto.Medication;
+            appointment.Prescription.Dosage = dto.Dosage;
+            appointment.Prescription.Instruction = dto.Instruction;
+            _appointmentRepository.Update(appointment);
+        }
+
         return true;
     }
 

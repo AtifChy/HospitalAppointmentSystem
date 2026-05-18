@@ -46,10 +46,7 @@ public class PatientController : Controller
         var adminOnly = AdminOnly();
         if (adminOnly != null) return adminOnly;
 
-        if (!ModelState.IsValid)
-        {
-            return View(dto);
-        }
+        if (!ModelState.IsValid) return View(dto);
 
         var success = _patientService.AddPatient(dto);
         if (!success)
@@ -62,10 +59,19 @@ public class PatientController : Controller
         return RedirectToAction("Index");
     }
 
+    private IActionResult? AdminOrDoctorOnly()
+    {
+        if (!SessionHelper.IsLoggedIn(HttpContext.Session))
+            return RedirectToAction("Login", "Auth");
+        if (!SessionHelper.IsAdmin(HttpContext.Session) && !SessionHelper.IsDoctor(HttpContext.Session))
+            return RedirectToAction("Index", "Home");
+        return null;
+    }
+
     public IActionResult Details(int id)
     {
-        var adminOnly = AdminOnly();
-        if (adminOnly != null) return adminOnly;
+        var authCheck = AdminOrDoctorOnly();
+        if (authCheck != null) return authCheck;
 
         var patient = _patientService.GetPatientById(id);
         if (patient == null) return NotFound();
@@ -90,10 +96,7 @@ public class PatientController : Controller
         var adminOnly = AdminOnly();
         if (adminOnly != null) return adminOnly;
 
-        if (!ModelState.IsValid)
-        {
-            return View(dto);
-        }
+        if (!ModelState.IsValid) return View(dto);
 
         var success = _patientService.UpdatePatient(dto);
         if (!success)

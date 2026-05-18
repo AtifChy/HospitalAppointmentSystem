@@ -25,13 +25,13 @@ builder.Services.AddScoped<PrescriptionRepository>();
 // BLL
 builder.Services.AddScoped(typeof(GenericService<>));
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<AdminService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<DoctorService>();
 builder.Services.AddScoped<PatientService>();
 builder.Services.AddScoped<AppointmentService>();
 builder.Services.AddScoped<DepartmentService>();
 builder.Services.AddScoped<PrescriptionService>();
-builder.Services.AddScoped<AdminService>();
 
 // Session
 builder.Services.AddDistributedMemoryCache();

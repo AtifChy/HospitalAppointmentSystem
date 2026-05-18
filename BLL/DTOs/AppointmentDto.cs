@@ -8,6 +8,8 @@ public class AppointmentDto
     public string Status { get; set; }
     public string? Notes { get; set; }
     public string DoctorName { get; set; }
+    public int PatientId { get; set; }
     public string PatientName { get; set; }
     public string Department { get; set; }
+    public PrescriptionDto? Prescription { get; set; }
 }

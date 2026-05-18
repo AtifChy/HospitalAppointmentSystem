@@ -49,6 +49,7 @@ public static class MapperConfig
             .ReverseMap()
             .ForMember(dest => dest.User, opt => opt.Ignore())
             .ForMember(dest => dest.Appointments, opt => opt.Ignore());
+        cfg.CreateMap<Prescription, PrescriptionDto>().ReverseMap();
     });
 
     public static Mapper GetMapper()

@@ -73,6 +73,59 @@ public class AppointmentController : Controller
     }
 
     [HttpGet]
+    public IActionResult AddPrescription(int id)
+    {
+        if (!SessionHelper.IsLoggedIn(HttpContext.Session) && !SessionHelper.IsDoctor(HttpContext.Session))
+            return RedirectToAction("Login", "Auth");
+
+        var appointment = _appointmentService.GetAppointmentWithDetails(id);
+        if (appointment == null) return RedirectToAction("Index", "Home");
+
+        if (appointment.Status != "Confirmed" && appointment.Status != "Completed")
+        {
+            TempData["ErrorMessage"] = "You can only add prescription for confirmed or completed appointments";
+            return RedirectToAction("Index", "Home");
+        }
+
+        ViewBag.PatientName = appointment.PatientName;
+
+        var dto = new PrescriptionDto
+        {
+            AppointmentId = id,
+            Medication = appointment.Prescription?.Medication ?? "",
+            Dosage = appointment.Prescription?.Dosage ?? "",
+            Instruction = appointment.Prescription?.Instruction ?? ""
+        };
+
+        return View(dto);
+    }
+
+    [HttpPost]
+    public IActionResult AddPrescription(PrescriptionDto dto)
+    {
+        if (!SessionHelper.IsLoggedIn(HttpContext.Session) && !SessionHelper.IsDoctor(HttpContext.Session))
+            return RedirectToAction("Login", "Auth");
+
+        if (!ModelState.IsValid) return View(dto);
+
+        var userId = SessionHelper.GetUserId(HttpContext.Session);
+        if (userId == null) return RedirectToAction("Login", "Auth");
+
+        var doctor = _doctorService.GetDoctorByUserId(userId.Value);
+        if (doctor == null) return RedirectToAction("Login", "Auth");
+
+        var success = _appointmentService.SavePrescription(dto, doctor.Id);
+        if (!success)
+        {
+            TempData["ErrorMessage"] = "Failed to save prescription";
+            return View(dto);
+        }
+
+        TempData["SuccessMessage"] = "Prescription saved successfully";
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
     public JsonResult GetDoctorsByDepartment(int departmentId)
     {
         var doctors = _doctorService.GetDoctorsByDepartmentId(departmentId);

@@ -21,6 +21,15 @@ public class AppointmentRepository : GenericRepository<Appointment>
             .ToList();
     }
 
+    public Appointment? GetAppointmentWithDetails(int id)
+    {
+        return _context.Appointments
+            .Include(a => a.Doctor).ThenInclude(d => d.User)
+            .Include(a => a.Patient).ThenInclude(p => p.User)
+            .Include(a => a.Prescription)
+            .FirstOrDefault(a => a.Id == id);
+    }
+
     public List<Appointment> GetByDoctorId(int doctorId)
     {
         return _context.Appointments
