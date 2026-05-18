@@ -25,11 +25,6 @@ public class AppointmentController : Controller
         _departmentService = departmentService;
     }
 
-    public IActionResult Index()
-    {
-        return View();
-    }
-
     public IActionResult Book()
     {
         if (!SessionHelper.IsPatient(HttpContext.Session))

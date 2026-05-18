@@ -64,6 +64,7 @@
                                 <th>Doctor</th>
                                 <th>Department</th>
                                 <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -75,17 +76,21 @@
                                     <td>@app.DoctorName</td>
                                     <td>@app.Department</td>
                                     <td>
-                                            <span
-                                                class="badge @(app.Status == "Confirmed" ? "bg-success" : app.Status == "Pending" ? "bg-warning" : "bg-secondary")">
-                                                @app.Status
-                                            </span>
+                                        <span
+                                            class="badge @(app.Status == "Confirmed" ? "bg-success" : app.Status == "Pending" ? "bg-warning" : "bg-secondary")">
+                                            @app.Status
+                                        </span>
+                                    </td>
+                                    <td class="w-auto">
+                                        <a asp-controller="Patient" asp-action="Details" asp-route-id="@app.PatientId"
+                                           class="btn btn-sm btn-outline-info" title="Patient Details">👁️</a>
                                     </td>
                                 </tr>
                             }
                             @if (!Model.UpcomingAppointments.Any())
                             {
                                 <tr>
-                                    <td colspan="5" class="text-center">No upcoming appointments</td>
+                                    <td colspan="6" class="text-center">No upcoming appointments</td>
                                 </tr>
                             }
                             </tbody>

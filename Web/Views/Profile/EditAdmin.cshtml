@@ -5,6 +5,14 @@
 
 <div class="row justify-content-center">
     <div class="col-md-8">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success mt-3">@TempData["SuccessMessage"]</div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger mt-3">@TempData["ErrorMessage"]</div>
+        }
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
                 <h4>Edit Profile (Admin)</h4>

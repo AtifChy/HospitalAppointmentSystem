@@ -5,10 +5,17 @@
 
 <div class="row justify-content-center">
     <div class="col-md-8">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success mt-3">@TempData["SuccessMessage"]</div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger mt-3">@TempData["ErrorMessage"]</div>
+        }
         <div class="card shadow">
-            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <div class="card-header bg-success text-white">
                 <h4 class="mb-0">My Profile (Doctor)</h4>
-                <a asp-action="Edit" class="btn btn-light btn-sm">Edit Profile</a>
             </div>
             <div class="card-body">
                 <dl class="row">
@@ -37,11 +44,13 @@
                     <dd class="col-sm-8">@Model.DateOfBirth.ToShortDateString()</dd>
 
                     <dt class="col-sm-4">Availability:</dt>
-                    <dd class="col-sm-8 text-@(Model.IsAvailable ? "success" : "danger")">
-                        @Model.IsAvailable
-                    </dd>
+                    <dd class="col-sm-8">@Model.IsAvailable</dd>
                 </dl>
+            </div>
+            <div class="card-footer text-end">
+                <a asp-action="Edit" class="btn btn-success">Edit</a>
             </div>
         </div>
     </div>
 </div>
+"

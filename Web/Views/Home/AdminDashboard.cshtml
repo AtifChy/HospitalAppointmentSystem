@@ -70,6 +70,7 @@
                 <th>Patient</th>
                 <th>Doctor</th>
                 <th>Status</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -85,6 +86,10 @@
                             class="badge @(app.Status == "Confirmed" ? "bg-success" : app.Status == "Pending" ? "bg-warning" : "bg-secondary")">
                             @app.Status
                         </span>
+                    </td>
+                    <td class="w-auto">
+                        <a asp-controller="Patient" asp-action="Details" asp-route-id="@app.PatientId"
+                           class="btn btn-sm btn-outline-info" title="Patient Details">👁️</a>
                     </td>
                 </tr>
             }

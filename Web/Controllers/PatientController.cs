@@ -70,8 +70,8 @@ public class PatientController : Controller
 
     public IActionResult Details(int id)
     {
-        var authCheck = AdminOrDoctorOnly();
-        if (authCheck != null) return authCheck;
+        // var authCheck = AdminOrDoctorOnly();
+        // if (authCheck != null) return authCheck;
 
         var patient = _patientService.GetPatientById(id);
         if (patient == null) return NotFound();
