@@ -278,13 +278,13 @@ namespace DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 5, 16, 0, 46, 8, 792, DateTimeKind.Local).AddTicks(9982),
+                            CreatedAt = new DateTime(2026, 5, 18, 17, 26, 1, 408, DateTimeKind.Local).AddTicks(7373),
                             DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@hospital.com",
                             IsActive = true,
                             MustChangePassword = false,
                             Name = "SuperUser",
-                            PasswordHash = "$2a$11$HvPwGi6zyd2zYQUY2ukLRuVuFhlfZF76Qw7pqXxETBlTgygNp48Bm",
+                            PasswordHash = "$2a$11$J1PCQR8tCTh9zPxnCueZG.EQ0ydv.haEmk4luddcw/Fqq668GERk2",
                             RoleId = 1
                         });
                 });

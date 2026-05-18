@@ -193,7 +193,7 @@ namespace DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Address", "CreatedAt", "DateOfBirth", "Email", "Gender", "IsActive", "MustChangePassword", "Name", "PasswordHash", "PhoneNumber", "RoleId" },
-                values: new object[] { 1, null, new DateTime(2026, 5, 16, 0, 46, 8, 792, DateTimeKind.Local).AddTicks(9982), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@hospital.com", null, true, false, "SuperUser", "$2a$11$HvPwGi6zyd2zYQUY2ukLRuVuFhlfZF76Qw7pqXxETBlTgygNp48Bm", null, 1 });
+                values: new object[] { 1, null, new DateTime(2026, 5, 18, 17, 26, 1, 408, DateTimeKind.Local).AddTicks(7373), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@hospital.com", null, true, false, "SuperUser", "$2a$11$J1PCQR8tCTh9zPxnCueZG.EQ0ydv.haEmk4luddcw/Fqq668GERk2", null, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_DoctorId",

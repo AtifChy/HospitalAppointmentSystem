@@ -1,0 +1,47 @@
+﻿@model BLL.DTOs.DoctorDto
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">My Profile (Doctor)</h4>
+                <a asp-action="Edit" class="btn btn-light btn-sm">Edit Profile</a>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Full Name:</dt>
+                    <dd class="col-sm-8">@Model.Name</dd>
+
+                    <dt class="col-sm-4">Email:</dt>
+                    <dd class="col-sm-8">@Model.Email</dd>
+
+                    <dt class="col-sm-4">Department:</dt>
+                    <dd class="col-sm-8">@Model.DepartmentName</dd>
+
+                    <dt class="col-sm-4">License Number:</dt>
+                    <dd class="col-sm-8">@Model.LicenseNumber</dd>
+
+                    <dt class="col-sm-4">Consultation Fee:</dt>
+                    <dd class="col-sm-8">$@Model.Fee</dd>
+
+                    <dt class="col-sm-4">Gender:</dt>
+                    <dd class="col-sm-8">@(Model.Gender ?? "Not Specified")</dd>
+
+                    <dt class="col-sm-4">Phone Number:</dt>
+                    <dd class="col-sm-8">@(Model.PhoneNumber ?? "Not Specified")</dd>
+
+                    <dt class="col-sm-4">Date of Birth:</dt>
+                    <dd class="col-sm-8">@Model.DateOfBirth.ToShortDateString()</dd>
+
+                    <dt class="col-sm-4">Availability:</dt>
+                    <dd class="col-sm-8 text-@(Model.IsAvailable ? "success" : "danger")">
+                        @Model.IsAvailable
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

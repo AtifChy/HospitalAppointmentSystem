@@ -1,0 +1,36 @@
+﻿@model BLL.DTOs.AdminDto
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4>My Profile (Admin)</h4>
+                <a asp-action="Edit" class="btn btn-light btn-sm">Edit Profile</a>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Name:</dt>
+                    <dd class="col-sm-8">@Model.Name</dd>
+
+                    <dt class="col-sm-4">Email:</dt>
+                    <dd class="col-sm-8">@Model.Email</dd>
+
+                    <dt class="col-sm-4">Gender:</dt>
+                    <dd class="col-sm-8">@(Model.Gender ?? "Not Specified")</dd>
+
+                    <dt class="col-sm-4">Phone Number:</dt>
+                    <dd class="col-sm-8">@(Model.PhoneNumber ?? "Not Specified")</dd>
+
+                    <dt class="col-sm-4">Date of Birth:</dt>
+                    <dd class="col-sm-8">@Model.DateOfBirth.ToShortDateString()</dd>
+
+                    <dt class="col-sm-4">Address:</dt>
+                    <dd class="col-sm-8">@(Model.Address ?? "Not Specified")</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
