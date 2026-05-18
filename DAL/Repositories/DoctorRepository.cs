@@ -42,4 +42,10 @@ public class DoctorRepository : GenericRepository<Doctor>
             .Include(d => d.Department)
             .FirstOrDefault(d => d.User.Id == id);
     }
+
+    public bool IsSlotTaken(int doctorId, DateTime date, TimeSpan timeSlot)
+    {
+        return _context.Appointments
+            .Any(a => a.DoctorId == doctorId && a.Date == date && a.TimeSlot == timeSlot);
+    }
 }

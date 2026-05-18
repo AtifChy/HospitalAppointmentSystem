@@ -100,4 +100,9 @@ public class DoctorService : GenericService<Doctor>
 
         return true;
     }
+
+    public bool IsSlotTaken(int doctorId, DateTime date, TimeSpan timeSlot)
+    {
+        return _doctorRepository.IsSlotTaken(doctorId, date, timeSlot);
+    }
 }

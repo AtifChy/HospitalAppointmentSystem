@@ -53,6 +53,22 @@ public class AppointmentController : Controller
             return View(dto);
         }*/
 
+        ViewBag.Departments = _departmentService.GetAllDepartments();
+        ViewBag.Doctors = _doctorService.GetAllDoctors();
+
+        if (dto.Date < DateTime.Today)
+        {
+            TempData["ErrorMessage"] = "Appointment date cannot be in the past";
+            return View(dto);
+        }
+
+        var slotTaken = _doctorService.IsSlotTaken(dto.DoctorId, dto.Date, TimeSpan.Parse(dto.TimeSlot));
+        if (slotTaken)
+        {
+            TempData["ErrorMessage"] = "Slot is already taken";
+            return View(dto);
+        }
+
         var userId = SessionHelper.GetUserId(HttpContext.Session);
         if (userId == null) return RedirectToAction("Login", "Auth");
 
@@ -63,8 +79,6 @@ public class AppointmentController : Controller
         if (!success)
         {
             TempData["ErrorMessage"] = "Failed to book appointment";
-            ViewBag.Departments = _departmentService.GetAllDepartments();
-            ViewBag.Doctors = _doctorService.GetAllDoctors();
             return View(dto);
         }
 
