@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BLL.Validation;
 
 namespace BLL.DTOs;
 
@@ -11,7 +12,8 @@ public class PatientDto
     public string Name { get; set; }
 
     [Required]
-    [EmailAddress]
+    [CustomEmail]
+    [UniqueEmail]
     public string Email { get; set; }
 
     public string? Password { get; set; }

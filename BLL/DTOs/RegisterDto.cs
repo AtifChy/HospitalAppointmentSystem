@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BLL.Validation;
 
 namespace BLL.DTOs;
 
@@ -9,7 +10,8 @@ public class RegisterDto
     public string Name { get; set; }
 
     [Required]
-    [EmailAddress]
+    [CustomEmail]
+    [UniqueEmail]
     public string Email { get; set; }
 
     [Required]
@@ -23,10 +25,17 @@ public class RegisterDto
     public string? Address { get; set; }
 
     [MaxLength(15, ErrorMessage = "Phone number must be 15 digits long")]
-    public string? PhoneNumber { get; set; }
+    public string PhoneNumber { get; set; }
 
+    [MinAge(16)]
     public DateTime DateOfBirth { get; set; }
-    public string? BloodGroup { get; set; }
-    public string? EmergencyContact { get; set; }
+
+    [Required]
+    public string BloodGroup { get; set; }
+
+    [Required]
+    [MaxLength(15, ErrorMessage = "Phone number must be 15 digits long")]
+    public string EmergencyContact { get; set; }
+
     public string? MedicalHistory { get; set; }
 }

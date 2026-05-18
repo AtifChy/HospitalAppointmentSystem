@@ -7,8 +7,8 @@ namespace BLL.Services;
 
 public class AdminService : GenericService<User>
 {
-    private readonly UserRepository _userRepository;
     private readonly Mapper _mapper;
+    private readonly UserRepository _userRepository;
 
     public AdminService(UserRepository userRepository) : base(userRepository)
     {
@@ -48,15 +48,9 @@ public class AdminService : GenericService<User>
     public bool UpdateAdmin(AdminDto dto)
     {
         var user = _userRepository.GetById(dto.Id);
-        if (user == null || user.RoleId != 1) return false;
+        if (user == null) return false;
 
         _mapper.Map(dto, user);
-        
-        // Don't update password here unless provided
-        if (!string.IsNullOrEmpty(dto.Password))
-        {
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-        }
 
         _userRepository.Update(user);
         return true;

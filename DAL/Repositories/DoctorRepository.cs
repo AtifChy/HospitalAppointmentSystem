@@ -49,4 +49,9 @@ public class DoctorRepository : GenericRepository<Doctor>
         return _context.Appointments
             .Any(a => a.DoctorId == doctorId && a.Date == date && a.TimeSlot == timeSlot);
     }
+
+    public bool IsLicenseUnique(string licenseNumber)
+    {
+        return !_context.Doctors.Any(d => d.LicenseNumber == licenseNumber);
+    }
 }

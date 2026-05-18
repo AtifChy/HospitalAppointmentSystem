@@ -105,4 +105,9 @@ public class DoctorService : GenericService<Doctor>
     {
         return _doctorRepository.IsSlotTaken(doctorId, date, timeSlot);
     }
+
+    public bool IsLicenseUnique(string licenseNumber)
+    {
+        return _doctorRepository.IsLicenseUnique(licenseNumber);
+    }
 }

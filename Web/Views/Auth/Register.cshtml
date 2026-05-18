@@ -72,6 +72,7 @@
                     <div class="mb-3">
                         <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
                         <input asp-for="PhoneNumber" class="form-control" placeholder="+1234567890"/>
+                        <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
                     </div>
 
                     <div class="mb-3">
@@ -87,6 +88,7 @@
                             <option value="O+">O+</option>
                             <option value="O-">O-</option>
                         </select>
+                        <span asp-validation-for="BloodGroup" class="text-danger small"></span>
                     </div>
 
                     <div class="mb-3">
@@ -97,6 +99,7 @@
                     <div class="mb-3">
                         <label asp-for="EmergencyContact" class="form-label">Emergency Contact</label>
                         <input asp-for="EmergencyContact" class="form-control" placeholder="+1234567890"/>
+                        <span asp-validation-for="EmergencyContact" class="text-danger small"></span>
                     </div>
 
                     <div class="d-grid mt-4">

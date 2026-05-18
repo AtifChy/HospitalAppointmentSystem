@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BLL.Validation;
 using Microsoft.EntityFrameworkCore;
 
 namespace BLL.DTOs;
@@ -12,7 +13,8 @@ public class DoctorDto
     public string Name { get; set; }
 
     [Required]
-    [EmailAddress]
+    [CustomEmail]
+    [UniqueEmail]
     public string Email { get; set; }
 
     [Required]
@@ -20,9 +22,12 @@ public class DoctorDto
 
     public string? Gender { get; set; }
     public string? PhoneNumber { get; set; }
+
+    [MinAge(18)]
     public DateTime DateOfBirth { get; set; }
 
     [Required]
+    [UniqueLicense]
     public string LicenseNumber { get; set; }
 
     [Required]
