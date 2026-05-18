@@ -8,6 +8,15 @@
     <a asp-action="Create" class="btn btn-primary">Add New Admin</a>
 </div>
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
 <div class="card shadow">
     <div class="card-body">
         <div class="table-responsive">
