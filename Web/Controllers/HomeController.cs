@@ -157,7 +157,7 @@ public class HomeController : Controller
 
         var success = _appointmentService.UpdateStatus(id, "Completed");
         if (success) TempData["SuccessMessage"] = "Appointment completed";
-        else TempData["ErrorMessage"] = "Failed to complete appointment";
+        else TempData["ErrorMessage"] = "Failed to complete appointment. Please add prescription first.";
 
         return RedirectToAction("Index");
     }

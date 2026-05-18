@@ -106,6 +106,9 @@ public class AppointmentService : GenericService<Appointment>
 
         if (Enum.TryParse<AppointmentStatus>(status, true, out var appointmentStatus))
         {
+            if (appointmentStatus == AppointmentStatus.Completed && appointment.Prescription == null)
+                return false;
+
             appointment.Status = appointmentStatus;
             _appointmentRepository.Update(appointment);
             return true;
