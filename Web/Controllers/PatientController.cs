@@ -23,12 +23,20 @@ public class PatientController : Controller
         return null;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(string sortOrder)
     {
         var adminOnly = AdminOnly();
         if (adminOnly != null) return adminOnly;
 
+        ViewBag.NameSort = sortOrder == "name_desc" ? "name_asc" : "name_desc";
+
         var patients = _patientService.GetAllPatients();
+        patients = sortOrder switch
+        {
+            "name_desc" => patients.OrderByDescending(p => p.Name).ToList(),
+            _ => patients.OrderBy(p => p.Name).ToList()
+        };
+
         return View(patients);
     }
 

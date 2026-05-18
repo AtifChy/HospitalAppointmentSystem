@@ -23,12 +23,24 @@ public class AdminController : Controller
         return null;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(string sortOrder)
     {
         var adminOnly = AdminOnly();
         if (adminOnly != null) return adminOnly;
 
+        ViewBag.NameSort = sortOrder == "name_desc" ? "name_asc" : "name_desc";
+        ViewBag.GenderSort = sortOrder == "gender_desc" ? "gender_asc" : "gender_desc";
+        ViewBag.StatusSort = sortOrder == "status_desc" ? "status_asc" : "status_desc";
+
         var admins = _adminService.GetAllAdmins();
+        admins = sortOrder switch
+        {
+            "name_desc" => admins.OrderByDescending(a => a.Name).ToList(),
+            "gender_desc" => admins.OrderByDescending(a => a.Gender).ToList(),
+            "status_desc" => admins.OrderByDescending(a => a.IsActive).ToList(),
+            _ => admins.OrderBy(a => a.Name).ToList()
+        };
+
         return View(admins);
     }
 
@@ -46,10 +58,7 @@ public class AdminController : Controller
         var adminOnly = AdminOnly();
         if (adminOnly != null) return adminOnly;
 
-        if (!ModelState.IsValid)
-        {
-            return View(dto);
-        }
+        if (!ModelState.IsValid) return View(dto);
 
         var success = _adminService.AddAdmin(dto);
         if (!success)
@@ -90,10 +99,7 @@ public class AdminController : Controller
         var adminOnly = AdminOnly();
         if (adminOnly != null) return adminOnly;
 
-        if (!ModelState.IsValid)
-        {
-            return View(dto);
-        }
+        if (!ModelState.IsValid) return View(dto);
 
         var success = _adminService.UpdateAdmin(dto);
         if (!success)

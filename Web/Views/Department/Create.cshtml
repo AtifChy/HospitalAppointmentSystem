@@ -36,8 +36,7 @@
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Create Department</button>
+                    <div class="d-flex justify-content-between">
                         @if (!string.IsNullOrEmpty(ViewBag.ReturnUrl))
                         {
                             <a href="@ViewBag.ReturnUrl" class="btn btn-outline-secondary">Back</a>
@@ -46,6 +45,7 @@
                         {
                             <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
                         }
+                        <button type="submit" class="btn btn-primary">Create</button>
                     </div>
                 </form>
             </div>

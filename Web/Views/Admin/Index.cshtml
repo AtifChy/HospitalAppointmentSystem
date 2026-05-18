@@ -23,11 +23,16 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">Name</a>
+                    </th>
                     <th>Email</th>
-                    <th>Phone</th>
-                    <th>Gender</th>
-                    <th>Status</th>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.GenderSort">Gender</a>
+                    </th>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.StatusSort">Status</a>
+                    </th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -37,7 +42,6 @@
                     <tr>
                         <td>@admin.Name</td>
                         <td>@admin.Email</td>
-                        <td>@admin.PhoneNumber</td>
                         <td>@admin.Gender</td>
                         <td>
                             <span class="badge @(admin.IsActive ? "bg-success" : "bg-danger")">
